@@ -4,7 +4,81 @@ output:
   html_document: default
 layout: page
 ---
-*Italics* indicate that laptops are required for lab activities.
+###  UNDER CONSTRUCTION
+
+####  Monday, Oct. 21
+
+* Discussion: why forecast?
+  * Reading: [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657)
+    * [Discussion questions]({{ site.baseurl }}/discussion/clark_etal_2001)
+  * Reading: [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726)
+    * [Discussion questions]({{ site.baseurl }}/discussion/Houlahan_questions)
+* Time series modeling (PBA)
+    * Introduction to time series modeling [demo code]({{ site.baseurl }}/lectures/time-series-modeling-intro.R)
+    * [Time series decomposition and autocorrelation assignment]({{ site.baseurl }}/assignments/ts_decomp_autocorr)
+* Time series forecasting (PBA)
+    * ?skip? Reading: [Forecasting Principles & Process Chapter 1](https://www.otexts.org/fpp/1)
+        * [Discussion questions]({{ site.baseurl }}/discussion/fpp_1_questions) 
+    * Introduction to forecasting [demo code]({{ site.baseurl }}/lectures/forecasting-intro.R)
+    * [Introduction to forecasting assignment]({{ site.baseurl }}/assignments/intro_to_forecasting)
+* Linking time series and population modeling (PBA)
+    * [Time series and population models]({{ site.baseurl }}/lectures/relate-AR1-to-popn-model)
+
+####  Tuesday, Oct. 22
+
+* Forecast evaluation (PBA)
+    * Forecast evaluation [demo code]({{ site.baseurl }}/lectures/forecasting-evaluation)
+    * Begin [Evaluating forecasts assignment]({{ site.baseurl }}/assignments/forecast_evaluation_assignment)
+* Discussion: Modeling for understanding vs. prediction
+    * Reading: [Breiman 2001](https://projecteuclid.org/euclid.ss/1009213726)
+        * [Discussion questions]({{ site.baseurl }}/discussion/Breiman_questions) 
+* Bias-variance trade-off (JMM)
+*	Model selection for understanding vs prediction (PBA)
+    * Reading: Tredennick et al. on model selection, in prep (distribute?)
+        * [Discussion questions]({{ site.baseurl }}/discussion/Tredennick_model_selection_questions) 
+    * [Model selection assignment]({{ site.baseurl }}/assignments/model_selection_assignment)
+
+#### Wednesday, Oct. 23
+
+* Quantifying uncertainty (PBA)
+    * skip?? Reading: Dietze Chapter 2
+        * [Discussion questions]({{ site.baseurl }}/discussion/Dietze_uncertainty_questions) 
+    * [Simulating prediction intervals]({{ site.baseurl }}/lectures/prediction_intervals_via_MC)
+* Discussion: Forecasting in other fields
+    * Reading: [The quiet revolution of numerical weather prediction](https://www.nature.com/articles/nature14956)
+        * [Discussion questions]({{ site.baseurl }}/discussion/weather_questions) 
+    * Reading: Nate Silver chapter 6 (Canvas)
+        * [Discussion questions]({{ site.baseurl }}/discussion/Silver_Economics_questions)
+* Intro to Bayes (JMM)
+* Bayes in practice (JAGS, Stan) (JMM)
+* Bayesian model selection (JMM)
+
+#### Thursday, Oct. 24
+
+* Bayesian regularization methods (JMM)
+* Discussion: Ecological forecasting case studies (population dynamics, biodiversity)
+    * Pick one or two these? Or find a better paper?
+    * Reading: [Population models--plants](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1890/07-2095.1)
+        * [Discussion questions]({{ site.baseurl }}/discussion/plant_invasion_questions)
+    * Reading: [Population models--animals](https://onlinelibrary.wiley.com/doi/10.1111/j.1365-2419.2005.00346.x)
+        * [Discussion questions]({{ site.baseurl }}/discussion/salmon_questions)
+    * Reading: [Harris et al. 2018](https://peerj.com/articles/4278/)
+        * [Discussion questions]({{ site.baseurl }}/discussion/Biodiversity_questions)
+* Forecasting tournament (PBA)
+    * [Forecasting tournament assignment]({{ site.baseurl }}/assignments/tournament)
+    
+#### Friday, Oct. 25
+
+* Forecasting tournament 
+    * Finish building models, compare results
+* Discussion: Ecological forecasting case studies (phenology, carbon cycling)
+    * Or skip this discussion and add more quantitative meat?
+* Discussion: The future of ecological forecasting
+    * Reading: Dietze et al. 2018? My paper on process and forecast horizon?
+
+
+
+### Semester-long schedule 
 
 * August 28
     * Discussion: Introduction; Can we forecast in ecology?
