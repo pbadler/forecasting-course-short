@@ -1,0 +1,15 @@
+File: precip.xls
+
+
+The file contains monthly precipitation measurements collected from 75 gauges at the Santa Rita Experimental Range. Of these 75 gauges, 24 are currently being monitored and 51 have been discontinued.
+
+Some gauges had measurements recorded under more than one name, but all data are entered under the most recent name.
+
+Precipitation amounts are recorded in 100ths of inches; two decimal places are assumed (e.g., 125 = 1.25 inches). A zero indicates that no precipitation occurred that month. A value of -9999 indicates missing or unavailable data.
+
+The sources of file data were original handwritten records and previously digitized data. In cases of discrepancy the original records were considered to be the ultimate authority.
+
+
+
+precipnotes.txt
+02 March 2006

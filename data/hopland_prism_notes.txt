@@ -1,0 +1,10 @@
+PRISM Time Series Data
+Location:  Lat: 38.9884   Lon: -123.0740   Elev: 308m
+Climate variables: ppt,tmin,tmean,tmax,vpdmin,vpdmax
+Spatial resolution: 4km
+Period: 1895-01 - 2018-07
+Dataset: AN81m
+PRISM day definition: 24 hours ending at 1200 UTC on the day shown
+Grid Cell Interpolation: Off
+Time series generated: 2018-Aug-23
+Details: http://www.prism.oregonstate.edu/documents/PRISM_datasets.pdf
