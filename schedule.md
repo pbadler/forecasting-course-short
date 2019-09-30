@@ -7,36 +7,35 @@ layout: page
 ###  UNDER CONSTRUCTION
 
 ####  Monday, Oct. 21
+|Time   |Activity                                 |
+|-------|-----------------------------------------|
+|9:00   |Introductions                            |
+|9:30   |Discussion: why forecast? <br/> [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657) <br/> [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726) <br/> [Discussion questions]({{ site.baseurl }}/discussion/Houlahan_questions)   |
+|10:30  |Break                                    |
+|10:45  |Introduction to time-series (PBA)        |
+|11:30  |[Time series decomposition and autocorrelation assignment]({{ site.baseurl }}/assignments/ts_decomp_autocorr) |
+|12:30  |Lunch                                    |
+|1:30   |Time-series forecasting (PBA)  [demo code]({{ site.baseurl }}/lectures/forecasting-intro.R) |
+|2:30   |[Introduction to forecasting assignment]({{ site.baseurl }}/assignments/intro_to_forecasting) |
+|3:30   |Break                                    |
+|3:45   |[Time series and population models]({{ site.baseurl }}/lectures/relate-AR1-to-popn-model)|
 
-* Discussion: why forecast?
-  * Reading: [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657)
-    * [Discussion questions]({{ site.baseurl }}/discussion/clark_etal_2001)
-  * Reading: [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726)
-    * [Discussion questions]({{ site.baseurl }}/discussion/Houlahan_questions)
+
 * Time series modeling (PBA)
     * Introduction to time series modeling [demo code]({{ site.baseurl }}/lectures/time-series-modeling-intro.R)
-    * [Time series decomposition and autocorrelation assignment]({{ site.baseurl }}/assignments/ts_decomp_autocorr)
-* Time series forecasting (PBA)
-    * ?skip? Reading: [Forecasting Principles & Process Chapter 1](https://www.otexts.org/fpp/1)
-        * [Discussion questions]({{ site.baseurl }}/discussion/fpp_1_questions) 
-    * Introduction to forecasting [demo code]({{ site.baseurl }}/lectures/forecasting-intro.R)
-    * [Introduction to forecasting assignment]({{ site.baseurl }}/assignments/intro_to_forecasting)
-* Linking time series and population modeling (PBA)
-    * [Time series and population models]({{ site.baseurl }}/lectures/relate-AR1-to-popn-model)
+
 
 ####  Tuesday, Oct. 22
+|Time   |Activity                                 |
+|-------|-----------------------------------------|
+|9:00   |Quiz??                                   |
+|9:30   |Forecast evaluation (PBA) [demo code]({{ site.baseurl }}/lectures/forecasting-evaluation) |
+|10:15   | [Evaluating forecasts assignment]({{ site.baseurl }}/assignments/forecast_evaluation_assignment)  |
+|11:45  |Discussion: Modeling for understanding vs. prediction <br/> Tredennick et al. in prep <br/> [Discussion questions]({{ site.baseurl }}/discussion/Tredennick_model_selection_questions)            |
+|12:45  |Lunch                                    |
+|1:30  | Bias-variance trade-off (JMM)
+|2:15   |[Model selection assignment]({{ site.baseurl }}/assignments/model_selection_assignment) |
 
-* Forecast evaluation (PBA)
-    * Forecast evaluation [demo code]({{ site.baseurl }}/lectures/forecasting-evaluation)
-    * Begin [Evaluating forecasts assignment]({{ site.baseurl }}/assignments/forecast_evaluation_assignment)
-* Discussion: Modeling for understanding vs. prediction
-    * Reading: [Breiman 2001](https://projecteuclid.org/euclid.ss/1009213726)
-        * [Discussion questions]({{ site.baseurl }}/discussion/Breiman_questions) 
-* Bias-variance trade-off (JMM)
-*	Model selection for understanding vs prediction (PBA)
-    * Reading: Tredennick et al. on model selection, in prep (distribute?)
-        * [Discussion questions]({{ site.baseurl }}/discussion/Tredennick_model_selection_questions) 
-    * [Model selection assignment]({{ site.baseurl }}/assignments/model_selection_assignment)
 
 #### Wednesday, Oct. 23
 
