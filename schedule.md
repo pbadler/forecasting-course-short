@@ -10,7 +10,7 @@ layout: page
 |Time   |Activity                                 |
 |-------|-----------------------------------------|
 |9:00   |Introductions                            |
-|9:30   |Discussion: why forecast? <br/> [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657) <br/> [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726) <br/> [Discussion questions]({{ site.baseurl }}/discussion/Houlahan_questions)   |
+|9:30   |Discussion: why forecast? <br/> [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657) <br/> [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726) <br/> [Discussion questions](discussion/Houlahan_questions)   |
 |10:30  |Break                                    |
 |10:45  |Introduction to time-series (PBA)  <br/>  [Time series decomposition]({{ site.baseurl }}/lectures/ts_decomposition)  <br/> [Autocorrelation]({{ site.baseurl }}/lectures/autocorrelation) |
 |11:30  |[Time series decomposition and autocorrelation assignment]({{ site.baseurl }}/assignments/ts_decomp_autocorr) |
