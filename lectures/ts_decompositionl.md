@@ -117,3 +117,4 @@ monthly_means <- tapply(NDVI.ts, cycle(NDVI.ts), FUN=mean)
 plot(monthly_means,type="o")
 
 ```
+
