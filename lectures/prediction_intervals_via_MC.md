@@ -3,6 +3,7 @@ title: "Computing prediction intervals with Monte Carlo simulations"
 output:
   html_document: default
 layout: post
+matjax: true
 ---
 
 For time series models, and other simple linear models, the

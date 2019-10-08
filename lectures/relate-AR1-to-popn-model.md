@@ -3,6 +3,7 @@ title: "Relating time series models to population models"
 output:
   html_document: default
 layout: post
+mathjax: true
 ---
 
 We've introduced autoregressive models in a purely statistical framework,
