@@ -6,6 +6,10 @@ layout: page
 ---
 ###  UNDER CONSTRUCTION
 
+[Discussion questions](discussion/Houlahan_questions)
+[Time series decomposition]({{ site.baseurl }}/lectures/ts_decomposition)
+
+
 ####  Monday, Oct. 21
 |Time   |Activity                                 |
 |-------|-----------------------------------------|
