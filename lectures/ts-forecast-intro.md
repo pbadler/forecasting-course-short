@@ -2,6 +2,7 @@
 title: "Introduction to time-series forecasting"
 output: html_document
 layout: post
+mathjax: true
 ---
 
 In [Forecasting Principles and Practices](https://otexts.com/fpp2/), 

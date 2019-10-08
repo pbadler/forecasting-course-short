@@ -2,6 +2,7 @@
 title: "Introduction to time-series modeling"
 output: html_document
 layout: post
+mathjax: true
 ---
 
 Now that you know how to decompose a time-series, and 
