@@ -17,11 +17,11 @@ Hyndman breaks forecasting down into six steps:
 We jumped in at step 4; now let's move on to step 5.
 The last time we fit models, the simplest was just the average:
 
-$y_t = c + \epsilon_t$ 
+$$y_t = c + \epsilon_t$$
 
 To make a forecast from any model, we ask what the model would 
 predict at the future time-step of interest. For the average model,
-we just need to know what $c$ is, which is just the mean(NDVI_ts):
+we just need to know what $$c$$ is, which is just the mean(NDVI_ts):
 
 ```
 rm(list=ls())
