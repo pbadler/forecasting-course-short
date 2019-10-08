@@ -1,7 +1,7 @@
 ---
 title: "Introduction to time-series modeling"
 output: html_document
-layout: page
+layout: post
 ---
 
 Now that you know how to decompose a time-series, and 
