@@ -15,7 +15,7 @@ layout: page
 |10:45  |Lecture: Introduction to time-series  <br/>  [Time series decomposition](lectures/ts_decomposition)  <br/> [Autocorrelation](lectures/autocorrelation) |
 |11:30  |Assignment: [Time series decomposition and autocorrelation](assignments/ts_decomp_autocorr) |
 |12:30  |Lunch                                    |
-|1:30   |Lecture: <br/> [Time series modeling](lectures/time-series-modeling-intro) <br/> [Time-series forecasting](lectures/forecasting-intro) |
+|1:30   |Lecture: <br/> [Time series modeling](lectures/time-series-models-intro) <br/> [Time-series forecasting](lectures/ts-forecast-intro) |
 |2:30   |Assignment: [Introduction to forecasting](assignments/intro_to_forecasting) |
 |3:30   |Break                                    |
 |3:45   |Lecture: [Time series and population models](lectures/relate-AR1-to-popn-model)|
