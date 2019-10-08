@@ -27,9 +27,9 @@ plot(rain_ts)
 
 The simplest, most basic time-series model is a random walk:
 
-$$y = c + \epsilon_t$$
+$y = c + \epsilon_t$
 
-where $$\epsilon$$ is normally distributed with a constant mean
+where $\epsilon$ is normally distributed with a constant mean
 and variance. Here is how we could fit that model to the
 NDVI time-series:
 
@@ -51,7 +51,7 @@ Let's build a model that takes this autocorrelation into account.
 In an autoregressive model, the current state of the response variable
 is related to its previous states:
 
-$$y_t = c + b_1 y_{t-1} + b_2 y_{t-2} ... + \epsilon_t$$
+$y_t = c + b_1 y_{t-1} + b_2 y_{t-2} ... + \epsilon_t$
 
 We can do this with an "ARIMA" model. The "AR" stands for "AutoRegressive" 
 (we will get to the rest of the acronym later).
@@ -106,9 +106,9 @@ acf(resid(arima_model))
 Box.test(resid(arima_model))
 
 ```
-We can also incorporate co-variates, the $$X$$'s:
+We can also incorporate co-variates, the $X$'s:
 
-$$y_t = c + b_1 y_{t-1} + b_2 y_{t-2} + B_1 X_1 + B_2 X_2... + \epsilon_t$$
+$y_t = c + b_1 y_{t-1} + b_2 y_{t-2} + B_1 X_1 + B_2 X_2... + \epsilon_t$
 
 ```
 rain_arima_model = auto.arima(NDVI_ts, xreg = rain_ts)
