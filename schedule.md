@@ -5,18 +5,17 @@ layout: page
 ---
 ###  UNDER CONSTRUCTION
 
-
 ####  Monday, Oct. 21
 
 |Time   |Activity                                 |
-|-------|-----------------------------------------|
+|:-------|:-----------------------------------------|
 |9:00   |Introductions                            |
 |9:30   |Discussion: why forecast? <br/> [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657) <br/> [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726) <br/> [Discussion questions](discussion/Houlahan_questions)   |
 |10:30  |Break                                    |
 |10:45  |Lecture: Introduction to time-series  <br/>  [Time series decomposition](lectures/ts_decomposition)  <br/> [Autocorrelation](lectures/autocorrelation) |
 |11:30  |Assignment: [Time series decomposition and autocorrelation](assignments/ts_decomp_autocorr) |
 |12:30  |Lunch                                    |
-|1:30   |Lecture: <br/> [Time series modeling](lectures/time-series-modeling-intro.R) <br/> [Time-series forecasting](lectures/forecasting-intro.R) |
+|1:30   |Lecture: <br/> [Time series modeling](lectures/time-series-modeling-intro) <br/> [Time-series forecasting](lectures/forecasting-intro.R) |
 |2:30   |Assignment: [Introduction to forecasting](assignments/intro_to_forecasting) |
 |3:30   |Break                                    |
 |3:45   |Lecture: [Time series and population models](lectures/relate-AR1-to-popn-model)|
