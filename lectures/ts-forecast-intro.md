@@ -1,5 +1,5 @@
 ---
-title: "Introduction to time-series modeling"
+title: "Introduction to time-series forecasting"
 output: html_document
 layout: page
 ---
