@@ -1,4 +1,3 @@
-
 ---
 title: "Introduction to time-series modeling"
 output: html_document
