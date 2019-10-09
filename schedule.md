@@ -5,36 +5,92 @@ layout: page
 ---
 ###  UNDER CONSTRUCTION
 
-####  Monday, Oct. 21
+###  Monday, Oct. 21
 
-|Time   |Activity                                 |
-|:-------|:-----------------------------------------|
-|9:00   |Introductions                            |
-|9:30   |Discussion: why forecast? <br/> [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657) <br/> [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726) <br/> [Discussion questions](discussion/Houlahan_questions)   |
-|10:30  |Break                                    |
-|10:45  |Lecture: Introduction to time-series  <br/>  [Time series decomposition](lectures/ts_decomposition)  <br/> [Autocorrelation](lectures/autocorrelation) |
-|11:30  |Assignment: [Time series decomposition and autocorrelation](assignments/ts_decomp_autocorr) |
-|12:30  |Lunch                                    |
-|1:30   |Lecture: <br/> [Time series modeling](lectures/time-series-models-intro) <br/> [Time-series forecasting](lectures/ts-forecast-intro) |
-|2:30   |Assignment: [Introduction to forecasting](assignments/intro_to_forecasting) |
-|3:30   |Break                                    |
-|3:45   |Lecture: [Time series and population models](lectures/relate-AR1-to-popn-model)|
+***
+9:00 -- Introductions
 
+***
+9:30 -- Why forecast?
 
-####  Tuesday, Oct. 22
+  * [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657)
+  * [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726)
 
-|Time   |Activity                                 |
-|-------|-----------------------------------------|
-|9:00   |Quiz??                                   |
-|9:30   |Forecast evaluation (PBA) [demo code]({{ site.baseurl }}/lectures/forecasting-evaluation) |
-|10:15   | [Evaluating forecasts assignment]({{ site.baseurl }}/assignments/forecast_evaluation_assignment)  |
-|11:45  |Discussion: Modeling for understanding vs. prediction <br/> Tredennick et al. in prep <br/> [Discussion questions]({{ site.baseurl }}/discussion/Tredennick_model_selection_questions)            |
-|12:45  |Lunch                                    |
-|1:30  | Bias-variance trade-off (JMM)
-|2:15   |[Model selection assignment]({{ site.baseurl }}/assignments/model_selection_assignment) |
+***
+10:30 -- Break
 
+***
+10:45 -- Lecture: Introduction to time-series
 
-#### Wednesday, Oct. 23
+* [Time series decomposition](lectures/ts_decomposition)
+* [Autocorrelation](lectures/autocorrelation)
+
+***
+11:30 -- Assignment
+
+* [Time series decomposition and autocorrelation](assignments/ts_decomp_autocorr) 
+
+***
+12:30 -- Lunch
+
+***
+1:30 -- Lecture
+
+* [Time series modeling](lectures/time-series-models-intro)
+* [Time-series forecasting](lectures/ts-forecast-intro) 
+
+***
+2:30 -- Assignment
+
+* [Introduction to forecasting](assignments/intro_to_forecasting) |
+
+***
+3:30 -- Break
+
+***
+3:45 -- Lecture
+
+* [Time series and population models](lectures/relate-AR1-to-popn-model)|
+
+***
+
+###  Tuesday, Oct. 22
+
+***
+9:00 -- Quiz??    
+
+***
+9:30 -- Lecture
+
+* Forecast evaluation (PBA) [demo code]({{ site.baseurl }}/lectures/forecasting-evaluation)
+
+***
+10:15 -- Assignment
+
+* [Evaluating forecasts](assignments/forecast_evaluation_assignment)
+
+***
+11:45 -- Discussion: Modeling for understanding vs. prediction 
+
+* Tredennick et al. in prep
+* [Discussion questions](discussion/Tredennick_model_selection_questions)         
+
+***
+12:45 -- Lunch   
+
+***
+1:30 -- Lecture
+
+* Bias-variance trade-off (JMM)
+
+***
+2:15 -- Assignment   
+
+* [Model selection assignment](assignments/model_selection_assignment) 
+
+***
+
+### Wednesday, Oct. 23
 
 * Quantifying uncertainty (PBA)
     * skip?? Reading: Dietze Chapter 2
