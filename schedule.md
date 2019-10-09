@@ -13,8 +13,10 @@ layout: page
 ***
 9:30 -- Why forecast?
 
-  * [Clark et al. 2001](https://doi.org/10.1126/science.293.5530.657)
-  * [Houlahan et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/oik.03726)
+  * Reading: Clark et al. 2001
+    * [Discussion questions](discussion/clark_etal_2001)
+  * Reading: Houlahan et al. 2017
+    * [Discussion questions](discussion/Houlahan_questions)
 
 ***
 10:30 -- Break
@@ -28,9 +30,10 @@ layout: page
 ***
 11:30 -- Assignment
 
- * [Time series decomposition and autocorrelation](assignments/ts_decomp_autocorr) 
+ * [Time series decomposition and autocorrelation](assignments/ts_decomp_autocorr)
+ 
 ***
-12:30 -- Lunch
+12:45 -- Lunch
 
 ***
 1:30 -- Lecture
@@ -44,10 +47,10 @@ layout: page
  * [Introduction to forecasting](assignments/intro_to_forecasting) 
 
 ***
-3:30 -- Break
+3:45 -- Break
 
 ***
-3:45 -- Lecture
+4:00 -- Lecture
 
 * [Time series and population models](lectures/relate-AR1-to-popn-model)
 
@@ -56,22 +59,22 @@ layout: page
 ###  Tuesday, Oct. 22
 
 ***
-9:00 -- Quiz??    
+9:00 -- Quiz    
 
 ***
 9:30 -- Lecture
 
-* Forecast evaluation (PBA) [demo code](lectures/forecasting-evaluation)
+ * Forecast evaluation (PBA) [demo code](lectures/forecasting-evaluation)
 
 ***
 10:15 -- Assignment
 
-* [Evaluating forecasts](assignments/forecast_evaluation_assignment)
+ * [Evaluating forecasts](assignments/forecast_evaluation_assignment)
 
 ***
 11:45 -- Discussion: Modeling for understanding vs. prediction 
 
- * Tredennick et al. in prep
+ * Reading: Tredennick et al. in prep
  * [Discussion questions](discussion/Tredennick_model_selection_questions)
  
 ***
@@ -113,9 +116,9 @@ layout: page
 11:00 -- Discussion
 
   * Discussion: Forecasting in other fields
-    * Reading: [The quiet revolution of numerical weather prediction](https://www.nature.com/articles/nature14956)
+    * Reading: Weather prediction
         * [Discussion questions](discussion/weather_questions) 
-    * Reading: Nate Silver chapter 6 (Canvas)
+    * Reading: Nate Silver on economics (Ch. 6)
         * [Discussion questions](discussion/Silver_Economics_questions)
 
 ***
