@@ -135,8 +135,7 @@ coverage_season
 ### Forecast horizon
 
 The forecast horizon is the time-scale of the forecast: How far into 
-the future are we trying to predict? Typically, forecast errors increase
-with longer forecast horizons:
+the future are we trying to predict? Typically, forecast errors increase with longer forecast horizons:
 ```
 plot(sqrt((arima_forecast$mean - NDVI_test)^2))
 lines(sqrt((seasonal_arima_forecast$mean -  NDVI_test)^2), col = 'blue')

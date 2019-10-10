@@ -3,26 +3,25 @@ title: "Time series decomposition and autocorrelation assignment"
 output:
   html_document: default
 layout: post
+mathjax: true
 ---
 
 The purpose of this exercise is to practice loading a time series, then decomposing
 it and testing for temporal autocorrelation. You can adapt the code that we
 went over in class:
 
-[Time series decomposition code](https://github.com/pbadler/forecasting-dynamics-course/blob/master/lectures/decomp_tutorial.R)
-
-[Autocorrelation code](https://github.com/pbadler/forecasting-dynamics-course/blob/master/lectures/autocorrelation.R)
+[Time series decomposition](lectures/ts_decomposition)
+[Autocorrelation](lectures/autocorrelation)
 
 The first step is to download the data. We will work with climate data
 from Tuscon, AZ, not too far from Portal. The data come from a gridded climate product called
-[PRISM](http://www.prism.oregonstate.edu/explorer/)). You can get the .csv file [here](https://github.com/pbadler/forecasting-dynamics-course/blob/master/data/tuscon_prism_monthly.csv).
+[PRISM](http://www.prism.oregonstate.edu/explorer/)). You can get the .csv file [here](https://github.com/pbadler/forecasting-course-short/blob/master/data/tuscon_prism_monthly.csv).
 Save it to your local drive (click on the "Raw" button then right-click and
 "Save as"), then 1) read it into R using `read.csv()` and 2) 
 convert the `tmin_C` column (minimum temperature) to a time series object. 
 Now you are ready to answer the questions below.
 
-*Each group should submit two files on Canvas: an R script containing all the code 
-you wrote, and a pdf/docx/odt file with answers to the following questions.*
+*Each group should submit two files as attachments in an email to Peter: an R script containing all the code you wrote, and a pdf/docx/odt file with answers to the following questions.*
 
 1) Decompose the time series using the `decompose()` function. Is there any clear
 trend in the minimum temperature time series? What does the seasonal signal look
