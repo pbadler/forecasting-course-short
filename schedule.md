@@ -73,18 +73,19 @@ layout: page
  * [Evaluating forecasts](assignments/forecast_evaluation_assignment)
 
 ***
-11:45 -- Discussion: Modeling for understanding vs. prediction 
+12:00 -- Lecture
+
+ * Bias-variance trade-off (JMM)
+
+
+***
+12:30 -- Lunch   
+
+***
+1:15 -- Discussion: Modeling for understanding vs. prediction 
 
  * Reading: Tredennick et al. in prep
  * [Discussion questions](discussion/Tredennick_model_selection_questions)
- 
-***
-12:45 -- Lunch   
-
-***
-1:30 -- Lecture
-
- * Bias-variance trade-off (JMM)
 
 ***
 2:15 -- Assignment   
@@ -103,8 +104,8 @@ layout: page
 9:30 -- Lecture
 
  * Quantifying uncertainty (PBA)
- * [Discussion questions]({{ site.baseurl }}/discussion/Dietze_uncertainty_questions) 
-  * [Simulating prediction intervals](lectures/prediction_intervals_via_MC)
+ * [Discussion questions](discussion/Dietze_uncertainty_questions) 
+ * [Simulating prediction intervals](lectures/prediction_intervals_via_MC)
   
 ***
 10:00 -- Assignment
@@ -112,10 +113,7 @@ layout: page
  * Simulating prediction intervals
 
 ***
-10:45 -- Break
-
-***
-11:00 -- Discussion
+11:30 -- Discussion
 
   * Discussion: Forecasting in other fields
     * Reading: Weather prediction
@@ -124,10 +122,10 @@ layout: page
         * [Discussion questions](discussion/Silver_Economics_questions)
 
 ***
-12:00 -- Lunch
+12:15 -- Lunch
 
 ***
-12:45 -- Lecture
+1:00 -- Lecture
 
  * Intro to Bayes (JMM)
  * Bayes in practice (JAGS, Stan) (JMM)
