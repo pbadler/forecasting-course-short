@@ -55,6 +55,7 @@ layout: page
 * [Time series and population models](lectures/relate-AR1-to-popn-model)
 
 ***
+<br/>
 
 ###  Tuesday, Oct. 22
 
@@ -64,7 +65,7 @@ layout: page
 ***
 9:30 -- Lecture
 
- * Forecast evaluation (PBA) [demo code](lectures/forecasting-evaluation)
+ * [Forecast evaluation](lectures/forecasting-evaluation)
 
 ***
 10:15 -- Assignment
@@ -91,6 +92,7 @@ layout: page
  * [Model selection assignment](assignments/model_selection_assignment)
 
 ***
+<br/>
 
 ### Wednesday, Oct. 23
 
@@ -132,6 +134,7 @@ layout: page
  * Bayesian model selection (JMM)
 
 ***
+<br/>
 
 ### Thursday, Oct. 24
 
@@ -164,7 +167,8 @@ layout: page
   * [Forecasting tournament](assignments/tournament)
 
 ***
-    
+<br/>
+  
 ### Friday, Oct. 25
 
 ***

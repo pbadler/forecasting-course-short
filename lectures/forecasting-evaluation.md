@@ -1,8 +1,9 @@
 ---
-layout: nil
+title: "Forecast evaluation"
+output: html_document
+layout: post
+mathjax: true
 ---
-
-# Evaluating forecasts
 
 ## Steps in forecasting
 
@@ -15,7 +16,10 @@ layout: nil
 
 ## Setup
 
+Let's start by loading the NDVI data.
+
 ```
+rm(list=ls())
 library(forecast)
 library(ggplot2)
 
@@ -23,64 +27,80 @@ data = read.csv("portal_timeseries.csv", stringsAsFactors = FALSE)
 head(data)
 NDVI_ts = ts(data$NDVI, start = c(1992, 3), end = c(2014, 11), frequency = 12)
 plot(NDVI_ts)
-acf(NDVI_ts)
 
 ```
 
-## Hindcasting
+## Model fitting
 
-#### Test and training data
+Last time we fit time-series models to the NDVI data, we used all 
+available observations. This time, we are going to separate the 
+dataset in two. We will have a *training* set, used to fit the model,
+and a *test* set which we hold out and will use to validate, or 
+evaluate, the skill of the model's predictions.
 
+The next two lines of code subset the full time-series 
+into a training set and a test set.
 ```
 NDVI_train <- window(NDVI_ts, end = c(2011, 11))
 NDVI_test <- window(NDVI_ts, start = c(2011, 12))
 ```
 
-#### Build model on training data
-
+Now we fit a model using the training set and the 
+`auto.arima()` function. We will use a non-seasonal
+model even though we know it is not very good.
 ```
 arima_model = auto.arima(NDVI_train, seasonal = FALSE)
 ```
 
-#### Make forecast
-
+We can then generate a forecast from that model.
 ```
 arima_forecast = forecast(arima_model, h = 36)
 ```
 
-## Visualize
-
-#### Time-series
-
+And we can visualize the time-series and the forecast:
 ```
 plot(arima_forecast)
 lines(NDVI_test,col="red")
 ```
 
-#### Observed-predicted
+### Compare observed and predicted
 
+Here is where the forecast evaluation starts: we compare the 
+predictions to the observations in the test set. We start
+by just visualizing the comparison:
 ```
 plot(arima_forecast$mean, NDVI_test)
 plot(as.vector(arima_forecast$mean), as.vector(NDVI_test))
 abline(0, 1)
 ```
 
-## Quantify
-
+Next, we can quantify the differences between the predictions
+and observations using the `accuracy()` function in the forecast
+package:
 ```
 arima_accur = accuracy(arima_forecast, NDVI_test)
 arima_accur
 ```
 
-* Errors higher on test than training data because training data is being fit
-* Brier Score == RMSE^2
-    * Common method for evaluating forecasts
-* Others
-    * correlation between observations and predictions (doesn't capture bias)
-    * R^2 of observations regressed on predictions (more informative if compared to null model)  
-    
-#### Visualize and quantify the accuracy of the seasonal ARIMA model
+Notice that the errors are higher for the test than training data. Does this make
+sense? The `accuracy` function returns the following metrics:
 
+  * ME: Mean error
+  * RMSE: Root mean squared error, this is a common metric for evaluating
+  forecasts. Sometimes it is called the Brier Score.
+  * MAE: Mean absolute error
+  * MAPE: Mean percentage error
+  * MAPE: Mean absolute percentage error
+  * MASE: Mean absolute scaled error
+  * ACF1: Autocorrelation of errors at lag 1
+
+Sometimes people will report the correlation between observations and predictions,
+but this doesn't capture bias, or the $R^2$ of observations regressed 
+on predictions (informative if compared to a null model). 
+    
+### Visualize and quantify the accuracy of the *seasonal* ARIMA model
+
+Same steps, but a (little bit) better model:
 ```
 seasonal_arima_model = auto.arima(NDVI_train)
 seasonal_arima_forecast = forecast(seasonal_arima_model, h = 36)
@@ -92,15 +112,18 @@ seasonal_accur <- accuracy(seasonal_arima_forecast, NDVI_test)
 seasonal_accur
 ```
 
-#### Coverage
+### Coverage
+
+We quantify "coverage" to make sure our representation of uncertainty is accurate.
+We want to make sure that, for example, roughly 95% of the 
+observations fall within the 95% confidence intervals.
 
 ```
 in_interval <- arima_forecast$lower[,1] < NDVI_test & arima_forecast$upper[,1] > NDVI_test
 coverage <- sum(in_interval) / length(NDVI_test)
 ```
 
-#### Compare
-
+Let's compare coverage of the non-seasonal and seasonal forecasts:
 ```
 data.frame(arima = arima_accur[2,], seasonal = seasonal_accur[2,])
 in_interval_season <- seasonal_arima_forecast$lower[,1] < NDVI_test & seasonal_arima_forecast$upper[,1] > NDVI_test
@@ -109,9 +132,13 @@ coverage
 coverage_season
 ```
 
-## Forecast horizon
+### Forecast horizon
 
+The forecast horizon is the time-scale of the forecast: How far into 
+the future are we trying to predict? Typically, forecast errors increase
+with longer forecast horizons:
 ```
 plot(sqrt((arima_forecast$mean - NDVI_test)^2))
 lines(sqrt((seasonal_arima_forecast$mean -  NDVI_test)^2), col = 'blue')
 ```
+
