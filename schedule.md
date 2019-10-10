@@ -152,15 +152,14 @@ layout: page
 ***
 1:15 -- Discussion
 
- * Ecological forecasting case studies (population dynamics, biodiversity)
-    * Pick one or two these? Or find a better paper?
-    * Reading: [Population models--plants](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1890/07-2095.1)
-        * [Discussion questions]({{ site.baseurl }}/discussion/plant_invasion_questions)
-    * Reading: [Population models--animals](https://onlinelibrary.wiley.com/doi/10.1111/j.1365-2419.2005.00346.x)
-        * [Discussion questions]({{ site.baseurl }}/discussion/salmon_questions)
-    * Reading: [Harris et al. 2018](https://peerj.com/articles/4278/)
-        * [Discussion questions]({{ site.baseurl }}/discussion/Biodiversity_questions)
-        
+ * Ecological forecasting case studies: each group will present one of the 
+ following papers. Presentations will be 10 minutes, followed by 10 minutes of discussion. 
+    * Harris et al. 2018: Forecasting biodiversity in breeding birds using best practices
+    * Ibanez et al 2009: Multivariate forecasts of potential distributions of invasive plant species
+    * Scheurel and Williams 2005: Forecasting climate-induced changes in the survival of Snake River spring/summer Chinook salmon 
+    * Satake et al. 2013: Forecasting flowering phenology under climate warming by modelling the regulatory dynamics of flowering-time genes
+    * Thomas et al. 2017: Leveraging 35 years of Pinus taeda research in the southeastern US to constrain forest carbon cycle predictions: regional data assimilation using ecosystem experiments
+  
 ***
 3:00 -- Assignment
 
@@ -195,7 +194,7 @@ layout: page
 3:00 -- Discussion
 
  * The future of ecological forecasting
-    * Reading: Dietze et al. 2018? others?
+    * Reading: Dietze et al. 2018
 
 
 
