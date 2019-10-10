@@ -20,10 +20,10 @@ the other.
 
 ### Preliminary steps ###
 
-1. Download the [Portal data](https://github.com/pbadler/forecasting-dynamics-course/blob/master/data/portal_timeseries.csv)
+1. Download the [Portal data](https://github.com/pbadler/forecasting-course-short/blob/master/data/portal_timeseries.csv)
 
 2. Aggregate the monthly data to annual time scale using the final chunk of the
-[introduction to forecasting lecture](lectures/ts-forecast-intro) as an example. Don't be surprised if this turns out to be the most challenging part of the assignment! 
+[introduction to forecasting lecture](./../lectures/ts-forecast-intro) as an example. Don't be surprised if this turns out to be the most challenging part of the assignment! 
       + For the rodents, just grab the May population count (month 5), since the rodent population peaks in May, on average. 
       + For the rain and NDVI covariates, sum months 1 to 4 (winter and early spring). The idea is that a wet and green winter and early spring might lead to high rodent counts in May.
       + Finally, merge/join the May rodent data frame with the aggregated rain and NDVI data frame.
@@ -69,7 +69,7 @@ would your answer to questions 1-5 change? (Remember to set `seasonal=FALSE`.)
 
 7. *Optional bonus question* Would your answers to questions 1-5 change if you
 fit a Gompertz population model? To do this, you should only have to add one line
-of code in between preliminary steps 2 and 3. Refer to [this lecture](lectures/relate-AR1-to-popn-model) for hints.
+of code in between preliminary steps 2 and 3. Refer to [this lecture](./../lectures/relate-AR1-to-popn-model) for hints.
 
 Submit your group's code along with a separate document containing answers to the questions as an attachment in an email to Peter.
 
