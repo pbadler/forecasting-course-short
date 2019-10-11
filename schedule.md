@@ -103,8 +103,7 @@ layout: page
 ***
 9:30 -- Lecture
 
- * Quantifying uncertainty (PBA)
- * [Discussion questions](discussion/Dietze_uncertainty_questions) 
+ * [Uncertainty](lectures/importance_of_uncertainty)
  * [Simulating prediction intervals](lectures/prediction_intervals_via_MC)
   
 ***
