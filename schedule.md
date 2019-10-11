@@ -111,6 +111,7 @@ layout: page
 10:00 -- Assignment
 
  * [Simulating prediction intervals](assignments/simulating_uncertainty_assignment)
+ 
 ***
 11:30 -- Discussion
 
