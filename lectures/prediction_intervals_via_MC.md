@@ -9,20 +9,20 @@ matjax: true
 For time series models, and other simple linear models, the
 `forecast()` function computes prediction intervals and add them to your
 figure. Super easy! But don't be lulled into a false sense of security:
-for many kinds of models, computing predictions intervals is a challenge.
+for many kinds of models, computing predictions intervals is a challenge. And 
+even the uncertainty envelopes that `forecast()` produces are not comprehensive:
+they show process error but not paramete uncertainty or other sources of error.
 
 In chapter 2 of his book, Mike Dietze introduces a useful tool for computing
 your own predictions intervals: Monte Carlo simulation. He illustrates this with
-a simple model of logistic population growth. Chapter 11 provides a full treatment
-of uncertainty analysis.
+a simple model of logistic population growth. 
 
-## Logistic growth example
+### Logistic growth example
 
 You can find Mike's full example [here](https://github.com/EcoForecast/EF_Activities/blob/master/Exercise_02_Logistic.Rmd) along with useful explanations of 
-working with probability distributions in R. Let's just go to the key block of code 
-where he shows how to account for *parameter error* in the logistic growth equation.
+working with probability distributions in R. Let's just go to the key block of code where he shows how to account for *parameter error* in the logistic growth equation.
 
-```
+```R
 # Specify uncertainty in the parameters:
 r = 1          ## Intrinsic growth rate
 K = 10         ## carrying capacity
@@ -49,7 +49,7 @@ for(i in 1:NE){        # loop over r and K samples
 n.stats = apply(n,2,quantile,c(0.025,0.5,0.975))
 ```
 And a couple of figures to visualize what we just did:
-```
+```R
 # plot 50 runs from the ensemble
 matplot(1:NT,t(n[1:50,]),type="l",col="black",lty=1)
 
@@ -60,7 +60,7 @@ plot(1:NT,n.stats[2,],type="l",
 lines(1:NT,n.stats[1,],col="blue",lty="dashed")
 lines(1:NT,n.stats[3,], col="blue",lty="dashed")
 ```
-## Correlated parameters
+### Correlated parameters
 
 In the previous example, we assumed that $r$ and $K$ were both normally-distributed
 but *independent* of each other. Often, parameters will be correlated. We can
@@ -73,7 +73,7 @@ a variance-covariance matrix. The diagonal of this matrix gives the
 variances, and the off-diagonals give the covariances between the random
 variates. Here is some R code to show how this works:
 
-```
+```R
 library(mvtnorm)
 
 my_mu = c(1,10)
@@ -95,7 +95,7 @@ In linear regressions, estimates of intercepts and slopes are often
 correlated. Here is an example of a Monte Carlo simulation to 
 take this into account:
 
-```
+```R
 # simulate an independent variable and a response 
 x = seq(1,100,5)
 y = 0.8*x + rnorm(length(x),0,max(x)/5)  # rnorm() adds some noise 
@@ -112,6 +112,7 @@ n = matrix(NA,NE,length(x))   # storage for all simulations
 coef_samples = rmvnorm(NE,mean=mu,sigma=sigma)  # sample values of coefficients
 for(i in 1:NE){        # loop over coefficient samples
   n[i,] = coef_samples[i,1] + coef_samples[i,2]*x   # predict values at each x
+  # n[i,] = n[i,] + rnorm(1,0,sd(resid(reg))) # process error
 }
 
 # calculate the median and 95% CI limits for each time point
@@ -129,7 +130,7 @@ in the observations?
 
 It's only showing the uncertainty caused by parameter error. 
 We could add the process error on top. For a 
-linear model like this, it is just the variance of the errors (or residuals).
+linear model like this, it is just the standard devation of the errors (or residuals).
 
 
 
