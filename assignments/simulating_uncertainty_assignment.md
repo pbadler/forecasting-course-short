@@ -10,7 +10,7 @@ mathjax: true
 
 The purpose of this assignment is to practice quantifying uncertainty using a Monte Carlo simulation approach. 
 
-We will work once again with the Yellowstone bison data. You will fit a fairly simple model, then use the code for the Monte Carlo simulation approaches I presented in [lecture](./../lecture/prediction_intervals_via_MC) to generate forecasts and quantify various sources of uncertainty.
+We will work once again with the Yellowstone bison data. You will fit a fairly simple model, then use the code for the Monte Carlo simulation approaches I presented in [lecture](./../lectures/prediction_intervals_via_MC) to generate forecasts and quantify various sources of uncertainty.
 
 ### Preliminary steps
 
@@ -48,7 +48,7 @@ Email Peter your R script(s) and a pdf containing the figures and your answer to
 
 ### Hints
 
-* The crux of this assignment will probably be the Monte Carlo simulations. Remember to draw you parameters from a multivariate normal distribution to account for correlated errors. You should be able to copy code from the correlated errors [example](./../lecture/prediction_intervals_via_MC).
+* The crux of this assignment will probably be the Monte Carlo simulations. Remember to draw you parameters from a multivariate normal distribution to account for correlated errors. You should be able to copy code from the correlated errors [example](./../lectures/prediction_intervals_via_MC).
 
 * In the logistic growth example, we initialized the model at some arbitrarily low value and ran forward from there. In this case, we want to make predictions starting in year 2011, which means we should initialize with the population size observed in 2010. 
 
