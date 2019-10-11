@@ -10,12 +10,12 @@ mathjax: true
 
 The purpose of this assignment is to practice quantifying uncertainty using a Monte Carlo simulation approach. 
 
-We will work once again with the Yellowstone bison data. You will fit a fairly simple model, then use the code for the Monte Carlo simulation approaches I presented in [lecture](./../lecture/prediction_intevals_via_MC) to generate forecasts and quantify various sources of uncertainty.
+We will work once again with the Yellowstone bison data. You will fit a fairly simple model, then use the code for the Monte Carlo simulation approaches I presented in [lecture](./../lecture/prediction_intervals_via_MC) to generate forecasts and quantify various sources of uncertainty.
 
 ### Preliminary steps
 
 1. Prepare the data the same way you did for the [model selection assignment](model_selection_assignment). This should include all the code 
-up to the line:
+up to and including the line:
 ```R
 # merge with bison
 bison_wide = left_join(bison,precip_wide,by=c("year" = "clim_year"))
@@ -48,9 +48,9 @@ Email Peter your R script(s) and a pdf containing the figures and your answer to
 
 ### Hints
 
-* The crux of this assignment will probably be the Monte Carlo simulations. Remember to draw you parameters from a multivariate normal distribution to account for correlated errors. You should be able to copy code from the correlated errors [example](./../lecture/prediction_intevals_via_MC).
+* The crux of this assignment will probably be the Monte Carlo simulations. Remember to draw you parameters from a multivariate normal distribution to account for correlated errors. You should be able to copy code from the correlated errors [example](./../lecture/prediction_intervals_via_MC).
 
-* In the logistic growth example, we initialized the model at some arbitrarily low value and ran forward from there. In this case, we want to make predictions starting in year 2011, which means we should initialize with the population size observed in 2011. 
+* In the logistic growth example, we initialized the model at some arbitrarily low value and ran forward from there. In this case, we want to make predictions starting in year 2011, which means we should initialize with the population size observed in 2010. 
 
 * Since we are not using the `forecast()` function, you won't
 be able to use the handy `plot.forecast()` function to visualize
