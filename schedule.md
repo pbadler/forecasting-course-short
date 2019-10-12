@@ -190,8 +190,8 @@ layout: page
 ***
 3:00 -- Discussion: The future of ecological forecasting
  
-    * Reading: Dietze et al. 2018
-    * [Discussion questions](discussion/Dietz2018_questions)
+ * Reading: Dietze et al. 2018
+ * [Discussion questions](discussion/Dietz2018_questions)
 
 
 
