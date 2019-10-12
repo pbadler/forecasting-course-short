@@ -188,12 +188,10 @@ layout: page
 2:45 -- Break
 
 ***
-3:00 -- Discussion
-
- * The future of ecological forecasting
+3:00 -- Discussion: The future of ecological forecasting
  
     * Reading: Dietze et al. 2018
-    * [Discussion questions](discussion/Dietze2018_questions)
+    * [Discussion questions](discussion/Dietz2018_questions)
 
 
 
