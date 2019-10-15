@@ -41,13 +41,13 @@ Witten materials will be in both English and Spanish. Lectures and discussions w
 
 2.  Also recommended is Mike Dietze's excellent textbook [Ecological Forecasting](https://press.princeton.edu/titles/11048.html). 
 
-3.	All reading materials will be made available through email???
+3.	All reading materials will be made available through email.
 
 4.	Laptops are required on all days.
 
 #### **Assessment and grading**
 
-20% of each student's grade will be based on class participation. 80% will be based on the group computer lab exercises. 
+10% of each student's grade will be based on class participation, 20% on daily quizes, and 70% written assignments (mostly computer labs to be completed during class time). 
 
 #### **Contact hours**
 
