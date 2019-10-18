@@ -128,7 +128,6 @@ layout: page
 
  * Intro to Bayes (JMM)
  * Bayes in practice (JAGS, Stan) (JMM)
- * Bayesian model selection (JMM)
 
 ***
 <br/>
@@ -141,6 +140,7 @@ layout: page
 *** 
 9:30 -- Lecture
 
+ * Bayesian model selection (JMM)
  * Bayesian regularization methods (JMM)
  
 ***
