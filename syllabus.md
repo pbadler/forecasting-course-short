@@ -20,11 +20,14 @@ The traditional goal of ecology has been to understand nature. Ecologists have m
 
 The goal of this class is to provide students a basic understanding of how populations, communities, and ecosystems change through time and to provide fundamental concepts of how to forecast those changes. By the end of the course, students will:
 
-1.	Have an appreciation of the dynamics of species, communities and ecosystem processes and the models used to represent those dynamics.
+1. Understand how forecasting can advance basic research in ecology and why it is critical
+for applications.
 
-2.	Understand the basic concepts of forecasting that apply across fields along with the particular challenges within ecology.
+2. Have an appreciation of the dynamics of species, communities and ecosystem processes and the models used to represent those dynamics.
 
-3.	Have the quantitative skills to fit a statistical model to a training data set and then generate predictions, and accompanying uncertainty estimates, for a test data set.
+3. Understand the basic concepts of forecasting that apply across fields along with the particular challenges within ecology.
+
+4.	Have the quantitative skills to fit a statistical model to a training data set and then generate predictions, and accompanying uncertainty estimates, for a test data set.
 
 #### **Methodology**
 
