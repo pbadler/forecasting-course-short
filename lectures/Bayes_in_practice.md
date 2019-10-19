@@ -32,6 +32,7 @@ cat(file = "bison.bug",
     s ~ dexp(1)
   }
 ")
+
 ```
 
 Ahora cargamos los datos y los acomodamos un poco, además de preparar los datos como hicimos antes, vamos a generar algunos data.frames extras (ver bb_wide y btrain):
@@ -43,7 +44,7 @@ library(dplyr)
 library(tidyverse)
 library(mvtnorm)
 
-# Set up bison data -----------------------------------------------------
+# Set up bison data ---------------------------------------------------
 bison = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/YNP_bison_counts.csv", stringsAsFactors = FALSE)
 bison = select(bison,c(year,count.mean)) # drop non-essential columns
 names(bison) = c("year","N") # rename columns
@@ -93,6 +94,7 @@ bb_wide = left_join(bbison,precip_wide,by=c("year" = "clim_year"))
 train = subset(bison_wide, year < 2012)
 test = subset(bison_wide, year >= 2012)
 btrain = subset(bb_wide, year < 2012)
+
 ```
 
 Ahora armamos una lista con los datos que vamos a pasarle a `JAGS`, un vector con los nombres de los parámetros que queremos guardar:
@@ -103,15 +105,17 @@ datos <- list(n = dim(btrain)[1],
               ppt_Jan = btrain$ppt_Jan)
 
 params <- c("b0", "b_lag", "b_ppt", "s")
+
 ```
 
-Además, queremos que las cadenas Markovianas comiencen en distintos valores. Para esto escribimos una pequeña función para generar valores iniciales de las cadenas (recordad que esto no tiene nada que ver con las previas)
+Además, queremos que las cadenas Markovianas comiencen en distintos valores. Para esto escribimos una pequeña función para generar valores iniciales de las cadenas (recuerden que esto no tiene nada que ver con las previas)
 
 ```
 inits <- function() list(b0 = runif(1, 0, 1), 
                          b_lag = runif(1, 0, 1), 
                          b_ppt = runif(1, 0, 1),
                          s = runif(1, 0, 10))
+                         
 ```
 
 Ahora podemos llamar a `JAGS` para ajustar el modelo
@@ -138,6 +142,41 @@ print(bison.sim)
 plot(bison.sim)
 
 ```
+Si queremos hacer predicciones, tenemos que tener en cuenta la incertidumbre en los valores de los parámetros. Esa incertidumbre está representada por la posterior conjunta de nuestro modelo. Veamos como hacer una predicción de Monte Carlo a partir de esta posterior conjunta:
+
+```R
+nsim = 1000      # Ensemble size
+tot_time = dim(test)[1] + 1
+nClim = matrix(NA, nsim, tot_time)   # storage for all simulations
+init_obs = test$loglagN[test$year==2012]
+nClim[,1] = rnorm(nsim, init_obs, 0)
+
+for(i in 1: nsim){
+  idx <- sample.int(bison.sim$mcmc.info$n.samples, 1)
+  for(j in 2: tot_time){
+    best_guess = bison.sim$sims.list$b0[idx] + 
+      bison.sim$sims.list$b_lag[idx] * nClim[i,j-1] + 
+      bison.sim$sims.list$b_ppt[idx] * test$ppt_Jan[test$year == 2010 + j]
+    nClim[i,j] = rnorm(1, best_guess, bison.sim$sims.list$s[idx]) 
+  }
+}
+
+
+# calculate 95% credible intervals the median and 95% CI limits for each time 
+library(coda)
+
+CI <- HPDinterval(as.mcmc(nClim))
+mp <- colMeans(nClim)
+# plot the data
+plot(c(train$year, test$year), c(train$logN, test$logN), ylim = c(6, 10), type = "l", xlab = "year", ylab = "log N")
+# add predictions, upper and lower CI's
+lines(test$year, mp[2: ncol(nClim)], col = "red", lty = "solid")
+lines(test$year, CI[2: ncol(nClim), 1], col = "red", lty = "dashed")
+lines(test$year, CI[2: ncol(nClim), 2], col = "red", lty = "dashed")
+
+accuracy(mp[2: tot_time], test$logN)
+
+```
 
 Un aspecto bastante útil de esta formulación es que podemos usarla directamente para hacer predicciones. Esto es porque cuando escribimos algo como `logN[i] ~ dnorm(mu[i], tau)` estamos diciendo que los valores de `logN` son muestreados de una distribución normal. Cuando `JAGS` encuentra valores en `logN[i]`, va a usar esos valores para actualizar las cadenas Markovianas de los parmámetros de esa distribución normal. Si en vez de encontrar valores encuentra `NA` (valores perdidos), entonces genera una muestra de la normal en base a los valores de los parámetros en las cadenas Markovianas. Veamos cómo usar esta característica para predecir el futuro:
 
@@ -151,20 +190,125 @@ datos <- list(n = dim(bison_wNA)[1],
 
 params <- c("b0", "b_lag", "b_ppt", "s", "logN")
 
-bp.sim <- jags(data = datos, inits = inits, 
+bp.sim <- jags(data = datos, 
+               inits = inits, 
                parameters.to.save = params, 
                model.file = "bison.bug", 
-               n.chains = nc, n.iter = ni, n.burnin = nb, n.thin = nt)
+               n.chains = 3, 
+               n.iter = 1000, 
+               n.burnin = 500, 
+               n.thin = 1)
 
 print(bp.sim)
 
+plot(bb_wide$year, log(bb_wide$N), 
+     ylim=c(6,10), type ="l", 
+     xlab= "year", ylab = "log N")
 
-plot(bb_wide$year, log(bb_wide$N), ylim=c(6,10),type="l",xlab="Year",ylab="log N")
+lines(bison_wNA$year[43:48], bp.sim$mean$logN[43:48], 
+      col = "red")
+lines(bison_wNA$year[43:48], bp.sim$q2.5$logN[43:48], 
+      col = "red", lty = "dashed")
+lines(bison_wNA$year[43:48], bp.sim$q97.5$logN[43:48], 
+      col = "red", lty = "dashed")
+
+accuracy( as.numeric( bp.sim$mean$logN[43:48] ), test$logN)
+
+```
+
+Veamos como ajustar este mismo modelo pero usando `Stan`. Primero tenemos que definir el modelo usando el lenguaje de `Stan`:
+
+```R
+cat(file = "bison.stan", 
+    "
+data { 
+  int<lower=1> n;
+  vector[n] logN;
+  vector[n] ppt_Jan;
+}
+
+parameters {
+  real b0;
+  real b_lag;
+  real b_ppt;
+  real<lower=0> sigma;
+}
+
+model{
+  vector[n] mu;
+  vector[n] loglagN;
+  b0 ~ normal(0,10);
+  b_lag ~ normal(0,1);
+  b_ppt ~ normal(0,1);
+  sigma ~ exponential(1);
+  
+  for(i in 2: n){
+    loglagN[i] = logN[i-1];
+    mu[i] = b0 + b_lag * loglagN[i] + b_ppt * ppt_Jan[i];
+  }
+  
+  logN[2: n] ~ normal(mu[2: n], sigma);
+}
+"
+)
+
+```
+
+Let's prepare the data and call `stan`
+
+```R
+
+library(rstan)
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
+bison_dat <- list(n = dim(btrain)[1],
+                logN = log(btrain$N),
+                ppt_Jan = btrain$ppt_Jan)
+
+fit <- stan(file = 'bison.stan', data = bison_dat,
+            iter = 1000, thin = 1, chains = 3)
+
+print(fit)
+
+```
+
+Para hacer predicciones a partir de la posterior conjunta de este modelo, podemos extraer las muestras de las posteriores y luego hacer la simulación de Monte Carlo como de costumbre
+
+```R
+
+pos <- rstan::extract(fit, pars = c("b0", "b_lag", "b_ppt", "sigma"))
+
+nsim = 1000      # Ensemble size
+tot_time = dim(test)[1] + 1
+nClim = matrix(NA, nsim, tot_time)   # storage for all simulations
+init_obs = test$loglagN[test$year==2012]
+nClim[,1] = rnorm(nsim, init_obs, 0)
+
+for(i in 1: nsim){
+  idx <- sample.int(bison.sim$mcmc.info$n.samples, 1)
+  for(j in 2: tot_time){
+    best_guess = pos$b0[idx] + 
+      pos$b_lag[idx] * nClim[i,j-1] + 
+      pos$b_ppt[idx] * test$ppt_Jan[test$year == 2010 + j]
+    nClim[i,j] = rnorm(1, best_guess, pos$sigma[idx]) 
+  }
+}
+
+
+# calculate 95% credible intervals the median and 95% CI limits for each time 
+library(coda)
+
+CI <- HPDinterval(as.mcmc(nClim))
+mp <- colMeans(nClim)
+# plot the data
+plot(c(train$year, test$year), c(train$logN, test$logN), ylim = c(6, 10), type = "l", xlab = "year", ylab = "log N")
 # add predictions, upper and lower CI's
-lines(bison_wNA$year[43:48], bp.sim$mean$logN[43:48],col="red")
-lines(bison_wNA$year[43:48], bp.sim$q2.5$logN[43:48],col="red",lty="dashed")
-lines(bison_wNA$year[43:48], bp.sim$q97.5$logN[43:48], col="red",lty="dashed")
-````
+lines(test$year, mp[2: ncol(nClim)], col = "red", lty = "solid")
+lines(test$year, CI[2: ncol(nClim), 1], col = "red", lty = "dashed")
+lines(test$year, CI[2: ncol(nClim), 2], col = "red", lty = "dashed")
 
+accuracy(mp[2: tot_time], test$logN)
 
+```
 
