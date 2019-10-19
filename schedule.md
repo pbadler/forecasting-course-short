@@ -75,7 +75,7 @@ layout: page
 ***
 12:00 -- Lecture
 
- * Bias-variance trade-off (JMM)
+ * [Bias-variance trade-off](lectures/bias-variance)
 
 
 ***
