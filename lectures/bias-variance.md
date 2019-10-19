@@ -96,6 +96,20 @@ f_hat <- array(NA, dim = c(nrep, n, 5))
 pr_e <- matrix(NA, nrep, 5)
 
 for(i in 1: nrep){
+
+x1 <- runif(n, -3, 3)
+x1 <- sort(x1) # para graficar
+x2 <- runif(n, -3, 3)
+
+m <- a + b1 * x1 + b2 * x2
+y <- rnorm(n, mean = m, sd = s)
+
+# simulamos más covariables
+x3 <- runif(n, -3, 3)
+x4 <- runif(n, -3, 3)
+x5 <- runif(n, -3, 3)
+
+
   y_rep <- rnorm(n, mean = m, sd = s)
   m1 <- lm(y_rep ~ 1)
   m2 <- lm(y_rep ~ x1)
@@ -135,8 +149,10 @@ for(i in 1:5){
 Podemos ver cómo cambian el sesgo y la varianza según la complejidad del modelo
 
 ```R
-plot(B, type = "l", lwd = 2, xlab = "model complexity")
+
+plot(B, type = "l", lwd = 2, xlab = "model complexity", ylim = c(0,1))
 lines(V, col = 2, lwd = 2)
+
 ```
 
 Veamos cómo es el error de predicción de nuestros modelos
@@ -161,8 +177,8 @@ lines(x1, a + b1 * x1 + b2 * x2, lwd = 2)
 ```
 
 **Relación con la selección de modelos**
-
-Antes que nada, tenemos que definir cómo medir qué tan bueno o malo es un modelo. Recién vimos por ejemplo el error de predicción como una medida para juzgar a los modelos. Hay razones para considerar medidas basadas en la teoría de la información.
+Cómo hacemos para encontrar el punto óptimo entre underfitting y overfitting?
+Antes que nada, tenemos que definir cómo medir qué tan bueno o malo es un modelo. Recién vimos por ejemplo el error de predicción como una medida para juzgar a los modelos. Hay buenas razones para considerar medidas basadas en la teoría de la información.
 
 Cómo medimos qué tan lejos estamos de nuestro objetivo?
 
@@ -172,6 +188,80 @@ Cómo medimos qué tan lejos estamos de nuestro objetivo?
 
 * En general, a los estadísticos les importa la *out of sample deviance*
 
+
+
+Informaciónn: La reducción en incertidumbre derivada de conocer un resultado.
+
+Information entropy:
+$$
+H \left( p \right) = - \text{E} \log \left( p_i \right) = \sum_{i=1}^{n} p_i \log \left( p_i \right)
+$$
+
+La incertidumbre contenida en una distribución de probabilidad es el promedio de log-probabilidades de un evento.
+
+Divergencia (Kullback-Leibler): La incertidumbre adicional generada por usar probabilidades de una distribución para describir a otra 
+
+Para estimar la divergencia de un modelo usamos la devianza 
+$$
+-2 \sum_{i} \log \left( p_i \right)
+$$
+
+Veamos qué pasa con la devianza de 
+
+
+```R
+set.seed(123)
+n <- 20
+a <- 0
+b1 <- 0.15
+b2 <- -0.4
+s <- 1
+
+nrep <- 1000
+
+dev_in  <- matrix(NA, nrep, 5)
+dev_out <- matrix(NA, nrep, 5)
+
+for(i in 1: nrep){
+
+X_in  <- matrix(runif(n*4, -3, 3), n, 4)
+X_out <- matrix(runif(n*4, -3, 3), n, 4)
+
+y_in  <- rnorm(n, mean = a + b1 * X_in[,1] + b2 * X_in[,2], sd = s)
+y_out <- rnorm(n, mean = a + b1 * X_out[,1] + b2 * X_out[,2], sd = s)
+
+  m1 <- lm(y_in ~ 1)
+  m2 <- lm(y_in ~ X_in[,1])
+  m3 <- lm(y_in ~ X_in[,1:2])
+  m4 <- lm(y_in ~ X_in[,1:3])
+  m5 <- lm(y_in ~ X_in[,1:4])
+  
+  dev_in[i, 1] <- -2 * sum(dnorm(y_in, coef(m1), sd = s, log = TRUE))
+  dev_in[i, 2] <- -2 * sum(dnorm(y_in, cbind(numeric(n)+1, X_in[,1]) %*% coef(m2), sd = s, log = TRUE))
+  dev_in[i, 3] <- -2 * sum(dnorm(y_in, cbind(numeric(n)+1, X_in[,1:2]) %*% coef(m3), sd = s, log = TRUE))
+  dev_in[i, 4] <- -2 * sum(dnorm(y_in, cbind(numeric(n)+1, X_in[,1:3]) %*% coef(m4), sd = s, log = TRUE))
+  dev_in[i, 5] <- -2 * sum(dnorm(y_in, cbind(numeric(n)+1, X_in[,1:4]) %*% coef(m5), sd = s, log = TRUE))
+  
+  dev_out[i, 1] <- -2 * sum(dnorm(y_out, coef(m1), sd = s, log = TRUE))
+  dev_out[i, 2] <- -2 * sum(dnorm(y_out, cbind(numeric(n)+1, X_out[,1]) %*% coef(m2), sd = s, log = TRUE))
+  dev_out[i, 3] <- -2 * sum(dnorm(y_out, cbind(numeric(n)+1, X_out[,1:2]) %*% coef(m3), sd = s, log = TRUE))
+  dev_out[i, 4] <- -2 * sum(dnorm(y_out, cbind(numeric(n)+1, X_out[,1:3]) %*% coef(m4), sd = s, log = TRUE))
+  dev_out[i, 5] <- -2 * sum(dnorm(y_out, cbind(numeric(n)+1, X_out[,1:4]) %*% coef(m5), sd = s, log = TRUE))
+}
+
+xs = 1:5
+sd_in <- numeric(5)
+for(i in 1:5) sd_in[i] <- sd(dev_in[,i])
+sd_out <- numeric(5)
+for(i in 1:5) sd_out[i] <- sd(dev_out[,i])
+
+plot(xs, colMeans(dev_in), xlim = c(1,5.5), ylim = c(40,90), xlab = "complejidad", ylab = "devianza")
+
+points(xs+0.2, colMeans(dev_out), pch = 19)
+
+segments(xs, colMeans(dev_in)-sd_in, xs, colMeans(dev_in)+sd_in)
+segments(xs+0.2, colMeans(dev_out)-sd_out, xs+0.2, colMeans(dev_out)+sd_out)
+```
 
 
 
