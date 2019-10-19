@@ -137,6 +137,34 @@ print(bison.sim)
 
 plot(bison.sim)
 
+```
+
+Un aspecto bastante útil de esta formulación es que podemos usarla directamente para hacer predicciones. Esto es porque cuando escribimos algo como `logN[i] ~ dnorm(mu[i], tau)` estamos diciendo que los valores de `logN` son muestreados de una distribución normal. Cuando `JAGS` encuentra valores en `logN[i]`, va a usar esos valores para actualizar las cadenas Markovianas de los parmámetros de esa distribución normal. Si en vez de encontrar valores encuentra `NA` (valores perdidos), entonces genera una muestra de la normal en base a los valores de los parámetros en las cadenas Markovianas. Veamos cómo usar esta característica para predecir el futuro:
+
+```R
+bison_wNA <- bb_wide
+bison_wNA$N[bb_wide$year >= 2012] <- NA
+
+datos <- list(n = dim(bison_wNA)[1],
+              logN = log(bison_wNA$N),
+              ppt_Jan = bison_wNA$ppt_Jan)
+
+params <- c("b0", "b_lag", "b_ppt", "s", "logN")
+
+bp.sim <- jags(data = datos, inits = inits, 
+               parameters.to.save = params, 
+               model.file = "bison.bug", 
+               n.chains = nc, n.iter = ni, n.burnin = nb, n.thin = nt)
+
+print(bp.sim)
+
+
+plot(bb_wide$year, log(bb_wide$N), ylim=c(6,10),type="l",xlab="Year",ylab="log N")
+# add predictions, upper and lower CI's
+lines(bison_wNA$year[43:48], bp.sim$mean$logN[43:48],col="red")
+lines(bison_wNA$year[43:48], bp.sim$q2.5$logN[43:48],col="red",lty="dashed")
+lines(bison_wNA$year[43:48], bp.sim$q97.5$logN[43:48], col="red",lty="dashed")
 ````
+
 
 
