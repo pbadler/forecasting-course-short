@@ -206,7 +206,7 @@ $$
 -2 \sum_{i} \log \left( p_i \right)
 $$
 
-Veamos qué pasa con la devianza de 
+Veamos qué pasa con la devianza cuando usamos las estimaciones de una muestra para predecir nuevos datos.
 
 
 ```R
@@ -262,6 +262,65 @@ points(xs+0.2, colMeans(dev_out), pch = 19)
 segments(xs, colMeans(dev_in)-sd_in, xs, colMeans(dev_in)+sd_in)
 segments(xs+0.2, colMeans(dev_out)-sd_out, xs+0.2, colMeans(dev_out)+sd_out)
 ```
+
+Vemos que la devianza estimada con la muestra disminuye con la complejidad del modelo, mientras que la devianza de datos nuevos (out-of-sample) tiene un mínimo en el modelo 3. Además, la diferencia en devianza de la muestra contra la de nuveos datos es aproximadamente 2 $\times$ el número de parámetros del modelo. AIC hace justamente esa cuenta: $\text{devianza} + 2 k$ donde $k$ es el número de parámetros del modelo.
+
+En general, el problema de *overfitting* ocurre porque como dice McElreath, nuestro modelo se entusiasma demasiado con la muestra. 
+
+Otra cara de esa moneda son los errores tipo M y S. La idea es la siguiente. Si un efecto (real) es de poca magnitud y tenemos muestras chicas o ruidosas (mediciones con poca precisión), solamente vamos a detectar efectos estadísticamente significativos cuando la magnitud estimada del efecto es exagerada (error M) y esto puede ocurrir incluso con efectos de signo contrario al verdadero (error S). Una buena referencia para estos errores se puede ver [aquí](http://www.stat.columbia.edu/~gelman/research/published/retropower_final.pdf). O buscando en el blog de Gelman https://statmodeling.stat.columbia.edu/
+
+Veamos de qué se trata haciendo unas simulaciones. Vamos a suponer que existe un efecto real entre una variable predictora y una respuesta, pero que la magnitud del efecto no es muy grande. Podemos simlular el caso de una regresión simple: 
+
+```R
+set.seed(123)
+
+n = 20
+b0 = 0.5
+b1 = 0.1
+sigma = 1 
+
+x = runif(n, -3,3)
+y = rnorm(n, b0 + b1 * x, sd = sigma)
+
+plot(x, y)
+curve(b0 + b1 * x, add = TRUE, lwd = 2, col = 2)
+abline(lm(y~x))
+```
+
+Podemos hacer unas cuantas réplicas y ver cuándo tenemos estimaciones significativas para la pendiente (b1) y luego graficar las relaciones estimadas entre $x$ e $y$
+
+```R
+n.reps = 1000
+n = 20
+res = matrix(NA, n.reps, 2)
+se = numeric(n.reps) # para guardar los errores estándar de la pendiente
+ps = numeric(n.reps) # para guardar los valores de p de la pendiente
+
+for(i in 1: n.reps){
+  x = runif(n, -3,3)
+  y = rnorm(n, b0 + b1 * x, sd = sigma)
+  tmp = summary(lm(y~x))$coefficients
+  se[i] = tmp[2,2]
+  ps[i] = tmp[2,4]
+  res[i, ] = tmp[,1]
+}
+```
+
+Grafiquemos las regresiones que fueron significativas
+
+```R
+
+plot(NULL, xlim = c(-3, 3), ylim = c(-1, 3), xlab = "x", ylab="y")
+for(i in 1: n.reps){
+  if(ps[i] <= 0.05){
+    curve(res[i,1] + res[i,2] * x, add = TRUE, col=rgb(0,0,0, 0.2))
+  } 
+} 
+
+curve(b0 + b1 * x, add = TRUE, col = 2, lwd = 3)
+```
+
+Las técnicas de *regularización* buscan restringir de alguna manera los valores que pueden tomar los coeficientes y así tratar de evitar el overfitting.
 
 
 
