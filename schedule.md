@@ -74,7 +74,7 @@ layout: page
 ***
 12:00 -- Lecture
 
- * Bias-variance trade-off (JMM)
+ * [Bias-variance trade-off](lectures/bias-variance)
 
 
 ***
@@ -126,7 +126,7 @@ layout: page
 1:00 -- Lecture
 
  * Intro to Bayes (JMM)
- * Bayes in practice (JAGS, Stan) (JMM)
+ * [Bayes in practice (JAGS, Stan, brms)](lectures/Bayes_in_practice)
 
 ***
 <br/>
