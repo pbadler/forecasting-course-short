@@ -73,7 +73,7 @@ lines(MA_m49, col="blue", lwd = 3)
 Classic Decomposition uses a Moving Average to fit the trend. After "detrending" (removing the trend from the observed data), the next
 step is to fit the seasonal signal. There are two basic ways to do this, additive or multiplicative. 
 * Additive: Observed = Trend + Seasonal + Irregular (fluctuations in the time series are independent of the trend)
-* Multiplicative: Observed = Trend*Seasonal*Irregular (fluctuations in the time series increase with the trend)
+* Multiplicative: Observed = Trend * Seasonal * Irregular (fluctuations in the time series increase with the trend)
 
 Let's look for a relationship between trend and seasonality in our
 NDVI data:
