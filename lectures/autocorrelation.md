@@ -3,6 +3,7 @@ title: "Autocorrelation"
 output:
   html_document: default
 layout: post
+mathjax: true
 ---
 
 My last lecture on time series decomposition focused on one type of
@@ -18,7 +19,7 @@ look like? Do it look like real, biological times series?
 rm(list=ls())
 setwd("C:/Repos/forecasting-course-short/lectures")
 library(forecast)
-#library(astsa)
+library(astsa)
 
 # create a random time series 
 set.seed(20)
@@ -76,8 +77,8 @@ The blue lines plotted are the 95% confidence interval. If more
 than 5% of spikes are outside this bound, your time series is probably not white noise. 
 
 A time series should always give you a correlation coefficient of 
-1 at a zero time lag. Some software pacakges displa this zero lag
-value, other do not. Make sure you check before you get excited about having a strong signal in the first lag!
+1 at a zero time lag. Some software packages display this zero lag
+value, others do not. Make sure you check before you get excited about having a strong signal in the first lag!
 
 For our NDVI time series, the strongest correlation is at a lag 
 of 1 month, and then the autocorrelation in the time series drops 
@@ -112,14 +113,10 @@ acf(rats.ts)
 Why do you think the kangaroo rat time series shows so much more
 autocorrelation than NDVI or precipitation?
 
-Autocorrelation can echo through a time series. If Y_t and Y_t-1 
-are strongly correlated, and Y_t-1 and Y_t-2 are strongly 
-correlated, then presumably Y_t and Y_t-2 must be correlated too.
-In fact, the correlation at lag 2 is the square of the 
-correlation at lag 1. We can examine this by using a partial ACF.  
+Autocorrelation can echo through a time series. If $Y_t$ and $Y_{t-1}$ are strongly correlated, and $Y_{t-1}$ and $Y_{t-2}$ are strongly correlated, then presumably $Y_{t}$ and $Y_{t-2}$ must be correlated too. In fact, the correlation at lag 2 is the square of the correlation at lag 1. We can examine this by using a partial ACF.  
 
-The PACF shows the correlation coefficient between t and t-2 
-after accounting for the relationship between t and t-1.
+The PACF shows the correlation coefficient between $t$ and $t-2$ 
+after accounting for the relationship between $t$ and $t-1$.
 
 ```
 acf(NDVI.ts)
@@ -144,7 +141,7 @@ tsdisplay(rats.ts)
 ```
 
 The rodents show a classic signal of an autoregressive model. 
-In an autoregressive model, the value of the variable at time t
+In an autoregressive model, the value of the variable at time $t$
 depends on the values at previous time steps. The random
 walk is a classic autoregressive model:
 
@@ -185,17 +182,7 @@ In a stationary time series, no moment of the distribution depends
 upon or changes predictably with time. Practically, this means 
 constant mean, variance, and autocovariance.
 
-You can check to see if your data is stationary:
-
-```
-adf.test(whitenoise)
-adf.test(x, alternative = "stationary")
-adf.test(NDVI.ts)
-adf.test(PPT.ts)
-adf.test(rats.ts)
-```
-If the p value > 0.05, the time series is not stationary.
-If the p value < 0.05, time series is stationary.
+What do stationary and non-stationary time series look like?
 
 ## Summary
 
@@ -208,7 +195,7 @@ analyses. Many tests assume iid: independent and identically distributed errors,
 from an underlying distribution. But autocorrelation
 means that your data is not a random draw. Each draw is influenced 
 by the previous draw. There are approaches for dealing with 
-autocorrelation (e.g., specifying correlations in the errors).
+autocorrelation that allow for traditional hypothesis testing (e.g., specifying correlations in the errors).
 
 
 
