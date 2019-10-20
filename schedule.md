@@ -127,7 +127,7 @@ layout: page
 1:00 -- Lecture
 
  * Intro to Bayes (JMM)
- * Bayes in practice (JAGS, Stan) (JMM)
+ * [Bayes in practice (JAGS, Stan, brms)](lectures/Bayes_in_practice)
 
 ***
 <br/>
