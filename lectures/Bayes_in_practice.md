@@ -254,7 +254,7 @@ model{
 
 ```
 
-Let's prepare the data and call `stan`
+Ahora preparamos los datos y llamamos a `stan`
 
 ```R
 
@@ -309,6 +309,82 @@ lines(test$year, CI[2: ncol(nClim), 1], col = "red", lty = "dashed")
 lines(test$year, CI[2: ncol(nClim), 2], col = "red", lty = "dashed")
 
 accuracy(mp[2: tot_time], test$logN)
+
+```
+
+También podemos hacer las predicciones usando el bloque de "generated quantities" en el modelo de `Stan` 
+
+```R
+
+cat(file = "bison1.stan", 
+    "
+data { 
+  int<lower=1> n_train;
+  int<lower=1> n_test;
+  vector[n_train] logN;
+  vector[n_train + n_test] ppt_Jan;
+}
+
+parameters {
+  real b0;
+  real b_lag;
+  real b_ppt;
+  real<lower=0> sigma;
+}
+
+model{
+  vector[n_train] mu;
+  vector[n_train] loglagN;
+  b0 ~ normal(0,10);
+  b_lag ~ normal(0,1);
+  b_ppt ~ normal(0,1);
+  sigma ~ exponential(1);
+  
+  for(i in 2: n_train){
+    loglagN[i] = logN[i-1];
+    mu[i] = b0 + b_lag * loglagN[i] + b_ppt * ppt_Jan[i];
+  }
+  
+  logN[2: n_train] ~ normal(mu[2: n_train], sigma);
+}
+
+generated quantities {
+  vector[n_test] logNpred;
+  vector[n_test + 1] llagN;
+  llagN[1] = logN[n_train];
+  for(t in 1:n_test){
+    logNpred[t] = normal_rng(b0 + b_lag * llagN[t] + b_ppt * ppt_Jan[n_train + t], sigma);
+    llagN[t+1] = logNpred[t];
+  }
+}
+
+"
+)
+
+bison1_dat <- list(n_train = dim(btrain)[1],
+                   n_test = dim(test)[1],
+                  logN = log(btrain$N),
+                  ppt_Jan = bison_wNA$ppt_Jan)
+
+fit <- stan(file = 'bison1.stan', data = bison1_dat,
+            iter = 1000, thin = 1, chains = 3)
+            
+print(fit)
+
+fit_summary <- summary(fit)$summary
+logNpred <- fit_summary[grepl("logNpred", rownames(fit_summary)),]
+
+plot(bb_wide$year, log(bb_wide$N), 
+     ylim=c(6,10), type ="l", 
+     xlab= "year", ylab = "log N")
+lines(test$year, logNpred[, 1], 
+      col = "red")
+lines(test$year, logNpred[, 4], 
+      col = "red", lty = "dashed")
+lines(test$year, logNpred[, 8], 
+      col = "red", lty = "dashed")
+
+accuracy( as.numeric( logNpred[,1] ), test$logN)
 
 ```
 
