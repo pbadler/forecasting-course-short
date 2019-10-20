@@ -3,7 +3,6 @@ title: "Schedule"
 output: html_document
 layout: page
 ---
-###  UNDER CONSTRUCTION
 
 ###  Monday, Oct. 21
 
