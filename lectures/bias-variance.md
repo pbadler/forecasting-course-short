@@ -320,7 +320,21 @@ for(i in 1: n.reps){
 curve(b0 + b1 * x, add = TRUE, col = 2, lwd = 3)
 ```
 
-Las técnicas de *regularización* buscan restringir de alguna manera los valores que pueden tomar los coeficientes y así tratar de evitar el overfitting.
+Las técnicas de *regularización* buscan restringir de alguna manera los valores que pueden tomar los coeficientes y así tratar de evitar el overfitting. Por ejemplo, cuando ajustamos un modelo usando mínimos cuadrados, buscamos minimizar 
+
+$$
+\sum_{i = 1}^{n} \left( y_i - \beta_0 + \sum_{j = 1}^{p} \left( x_{ij} \beta_j \right)  \right)^2
+$$
+
+Los métodos de Ridge regression, LASSO y Elastic net penalizan esta cuenta (o el likelihood según la implementación) para evitar overfitting
+
+Elastic net usa
+
+$$
+\sum_{i = 1}^{n} \left( y_i - \beta_0 + \sum_{j = 1}^{p} \left( x_{ij} \beta_j \right)  \right)^2 + \lambda \sum_{j = 1}^{p} \left[ \frac{1}{2} \left(1 - \alpha \right) \beta_{j}^2 + \alpha  \lVert \beta_j \rVert \right]
+$$
+
+
 
 
 
