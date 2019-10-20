@@ -282,11 +282,11 @@ pos <- rstan::extract(fit, pars = c("b0", "b_lag", "b_ppt", "sigma"))
 nsim = 1000      # Ensemble size
 tot_time = dim(test)[1] + 1
 nClim = matrix(NA, nsim, tot_time)   # storage for all simulations
-init_obs = test$loglagN[test$year==2012]
+init_obs = test$loglagN[test$year == 2012]
 nClim[,1] = rnorm(nsim, init_obs, 0)
 
 for(i in 1: nsim){
-  idx <- sample.int(bison.sim$mcmc.info$n.samples, 1)
+  idx <- sample.int(dim(pos$b0), 1)
   for(j in 2: tot_time){
     best_guess = pos$b0[idx] + 
       pos$b_lag[idx] * nClim[i,j-1] + 
@@ -312,3 +312,60 @@ accuracy(mp[2: tot_time], test$logN)
 
 ```
 
+Para modelos de tipo "regresión", podemos usar el paquete `brms` de [Paul Bürkner](https://paul-buerkner.github.io/brms/). `brms` es una interfase entre `R` y `Stan`, podemos escribir modelos con las fórmulas de `R` para modelos lineales y `brms` escriber por nosotros el modelo de `Stan`
+
+```R
+
+library(brms)
+
+# mb <- brm(logN ~ loglagN + ppt_Jan, data = train)
+# make_stancode(logN ~ loglagN + ppt_Jan, data=train)
+
+mb <- brm(logN ~ loglagN + ppt_Jan, 
+          family = gaussian(),
+          prior = c(set_prior("normal(0, 1)", class = "b"),
+                    set_prior("exponential(1)", class = "sigma")),
+          chains = 3,
+          iter = 1000,
+          warmup = 500,
+          data = train)
+          
+print(mb)
+
+plot(mb)
+
+pos <- posterior_samples(mb)
+
+
+nsim = 1000      # Ensemble size
+tot_time = dim(test)[1] + 1
+nClim = matrix(NA, nsim, tot_time)   # storage for all simulations
+init_obs = test$loglagN[test$year==2012]
+nClim[,1] = rnorm(nsim, init_obs, 0)
+
+for(i in 1: nsim){
+  idx <- sample.int(dim(pos)[1], 1)
+  for(j in 2: tot_time){
+    best_guess = pos$b_Intercept[idx] + 
+      pos$b_loglagN[idx] * nClim[i,j-1] + 
+      pos$b_ppt_Jan[idx] * test$ppt_Jan[test$year == 2010 + j]
+    nClim[i,j] = rnorm(1, best_guess, pos$sigma[idx]) 
+  }
+}
+
+
+# calculate 95% credible intervals the median and 95% CI limits for each time 
+library(coda)
+
+CI <- HPDinterval(as.mcmc(nClim))
+mp <- colMeans(nClim)
+# plot the data
+plot(c(train$year, test$year), c(train$logN, test$logN), ylim = c(6, 10), type = "l", xlab = "year", ylab = "log N")
+# add predictions, upper and lower CI's
+lines(test$year, mp[2: ncol(nClim)], col = "red", lty = "solid")
+lines(test$year, CI[2: ncol(nClim), 1], col = "red", lty = "dashed")
+lines(test$year, CI[2: ncol(nClim), 2], col = "red", lty = "dashed")
+
+accuracy(mp[2: tot_time], test$logN)
+
+```
