@@ -334,7 +334,9 @@ $$
 \sum_{i = 1}^{n} \left( y_i - \beta_0 + \sum_{j = 1}^{p} \left( x_{ij} \beta_j \right)  \right)^2 + \lambda \sum_{j = 1}^{p} \left[ \frac{1}{2} \left(1 - \alpha \right) \beta_{j}^2 + \alpha  \lVert \beta_j \rVert \right]
 $$
 
+Donde $\lambda$ controla el grado de penalidad y $\alpha$ cuanto de "ridge" o de "LASSO" usamos.
 
+Como veremos más adelante, estas penalizaciones se pueden resolver de manera más elegante con métodos Bayesianos usando previas informativas.
 
 
 

@@ -612,7 +612,17 @@ for(i in 1: n.reps){
 } 
 
 curve(b0 + b1 * x, add = TRUE, col = 2, lwd = 3)</code></pre>
-<p>Las técnicas de <em>regularización</em> buscan restringir de alguna manera los valores que pueden tomar los coeficientes y así tratar de evitar el overfitting.</p>
+<p>Las técnicas de <em>regularización</em> buscan restringir de alguna manera los valores que pueden tomar los coeficientes y así tratar de evitar el overfitting. Por ejemplo, cuando ajustamos un modelo usando mínimos cuadrados, buscamos minimizar</p>
+<p><span class="math display">\[
+\sum_{i = 1}^{n} \left( y_i - \beta_0 + \sum_{j = 1}^{p} \left( x_{ij} \beta_j \right)  \right)^2
+\]</span></p>
+<p>Los métodos de Ridge regression, LASSO y Elastic net penalizan esta cuenta (o el likelihood según la implementación) para evitar overfitting</p>
+<p>Elastic net usa</p>
+<p><span class="math display">\[
+\sum_{i = 1}^{n} \left( y_i - \beta_0 + \sum_{j = 1}^{p} \left( x_{ij} \beta_j \right)  \right)^2 + \lambda \sum_{j = 1}^{p} \left[ \frac{1}{2} \left(1 - \alpha \right) \beta_{j}^2 + \alpha  \lVert \beta_j \rVert \right]
+\]</span></p>
+<p>Donde <span class="math inline">\(\lambda\)</span> controla el grado de penalidad y <span class="math inline">\(\alpha\)</span> cuanto de “ridge” o de “LASSO” usamos.</p>
+<p>Como veremos más adelante, estas penalizaciones se pueden resolver de manera más elegante con métodos Bayesianos usando previas informativas.</p>
 
 
 
