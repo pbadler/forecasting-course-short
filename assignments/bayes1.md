@@ -1,16 +1,16 @@
 ---
-title: "Bayes"
+title: ""
 output:
   html_document: default
 layout: post
 mathjax: true
 ---
 
-# Regresiones Simples con `JAGS`
+# Modelos Simples con `JAGS`
 
 En este práctico vamos a ajustar regresiones lineales. Para eso tenemos que aprender a escribir las correspondientes funciones de likelihood y aprender a definir las previas de los parámetros. 
 
-## Objetivos:
+### Objetivos:
 
 - Familiarizarse con la formulación de funciones de likelihood (modelos de datos)
 - Simular datos a partir de distintas funciones de likelihood
@@ -93,10 +93,11 @@ m1.sim <- jags(data = datos, inits = inits, parameters.to.save = params,
 ```
 
 
-## Ejercicios
+### Ejercicios
 
 1. graficar la incertidumbre en $n$ para todos los $t$.
 
 2. Modificar la simulación y el modelo de `BUGS` para que los $n$ tengan valores discretos.
 
-2. Modificar la simulación y el modelo de `BUGS` para incluir error de observación.
+3. Modificar la simulación y el modelo de `BUGS` para incluir error de observación.
+
