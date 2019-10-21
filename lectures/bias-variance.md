@@ -84,7 +84,7 @@ tr_e[3] = mean((y - predict(m3))^2)
 tr_e[4] = mean((y - predict(m4))^2)
 tr_e[5] = mean((y - predict(m5))^2)
 
-plot(tr_e, xlab = "model complexity", ylab = "error")
+plot(tr_e, type = "o", xlab = "model complexity", ylab = "error")
 ```
 
 Veamos qué pasa si simulamos nuevos conjuntos de datos (conservando los valores de las predictoras)
@@ -161,22 +161,36 @@ Veamos cómo es el error de predicción de nuestros modelos
 
 plot(tr_e, ylim = c(0.5,2), type = "l", lwd = 3, xlab = "model complexity", ylab = "error")
 lines(colMeans(pr_e), col = 2, lwd = 3)
+text(4, 0.9, "in")
+text(4.3, 1.4, "out")
+
 
 ```
 Quizás una mejor forma de entender este problema sea considerando que tenemos que tratar de evitar dos riesgos, el de *underfitting* y el de *overfitting*. Modelos que sub-ajustan van a ser poco sensibles a nuevos datos, mientras que los que sobre-ajustan van a ser demasiado sensibles a nuevos datos.
 
 ```R
-plot(NULL, xlim = c(-3,3), ylim = c(-3,3))
+#plot(NULL, xlim = c(-2, 2), ylim = c(-2, 2))
+op <- par(mfrow = c(3,1))
+plot(NULL, xlim = c(-2, 2), ylim = c(-2, 2))
 for(i in 1: 50){
   lines(x1, f_hat[i,,1], col = rgb(0,0,0, 0.2))
-  lines(x1, f_hat[i,,5], col = rgb(1,0,0, 0.2))
-  lines(x1, f_hat[i,,3], col = rgb(0,1,0, 0.2))
 }
-lines(x1, a + b1 * x1 + b2 * x2, lwd = 2)
+plot(NULL, xlim = c(-2, 2), ylim = c(-2, 2))
+for(i in 1: 50){
+  lines(x1, f_hat[i,,3], col = rgb(0,0,0, 0.2))
+}
+plot(NULL, xlim = c(-2, 2), ylim = c(-2, 2))
+for(i in 1: 50){
+  lines(x1, f_hat[i,,5], col = rgb(0,0,0, 0.2))
+}
+
+par(op)
+#lines(x1, a + b1 * x1 + b2 * x2, lwd = 2)
 
 ```
 
-**Relación con la selección de modelos**
+### Teoría de la información y AIC
+
 Cómo hacemos para encontrar el punto óptimo entre underfitting y overfitting?
 Antes que nada, tenemos que definir cómo medir qué tan bueno o malo es un modelo. Recién vimos por ejemplo el error de predicción como una medida para juzgar a los modelos. Hay buenas razones para considerar medidas basadas en la teoría de la información.
 
@@ -254,19 +268,22 @@ for(i in 1:5) sd_in[i] <- sd(dev_in[,i])
 sd_out <- numeric(5)
 for(i in 1:5) sd_out[i] <- sd(dev_out[,i])
 
-plot(xs, colMeans(dev_in), xlim = c(1,5.5), ylim = c(40,90), xlab = "complejidad", ylab = "devianza")
+plot(xs, colMeans(dev_in), type = "o", xlim = c(1,5.5), ylim = c(40,90), xlab = "complejidad", ylab = "devianza")
 
-points(xs+0.2, colMeans(dev_out), pch = 19)
+lines(xs+0.2, colMeans(dev_out), type = "o", pch = 19)
 
 segments(xs, colMeans(dev_in)-sd_in, xs, colMeans(dev_in)+sd_in)
 segments(xs+0.2, colMeans(dev_out)-sd_out, xs+0.2, colMeans(dev_out)+sd_out)
+
 ```
 
-Vemos que la devianza estimada con la muestra disminuye con la complejidad del modelo, mientras que la devianza de datos nuevos (out-of-sample) tiene un mínimo en el modelo 3. Además, la diferencia en devianza de la muestra contra la de nuveos datos es aproximadamente 2 $\times$ el número de parámetros del modelo. AIC hace justamente esa cuenta: $\text{devianza} + 2 k$ donde $k$ es el número de parámetros del modelo.
+Vemos que la devianza estimada con la muestra disminuye con la complejidad del modelo, mientras que la devianza de datos nuevos (out-of-sample) tiene un mínimo en el modelo $3$. Además, la diferencia en devianza de la muestra contra la de nuveos datos es aproximadamente 2 $\times$ el número de parámetros del modelo. AIC hace justamente esa cuenta: $\text{devianza} + 2 k$ donde $k$ es el número de parámetros del modelo. Vean sin embargo, que lo que calcula AIC es el resultado esperado, pero que entre muestra y muestra hay mucha variabilidad como muestan las barras de error del gráfico.
 
 En general, el problema de *overfitting* ocurre porque como dice McElreath, nuestro modelo se entusiasma demasiado con la muestra. 
 
-Otra cara de esa moneda son los errores tipo M y S. La idea es la siguiente. Si un efecto (real) es de poca magnitud y tenemos muestras chicas o ruidosas (mediciones con poca precisión), solamente vamos a detectar efectos estadísticamente significativos cuando la magnitud estimada del efecto es exagerada (error M) y esto puede ocurrir incluso con efectos de signo contrario al verdadero (error S). Una buena referencia para estos errores se puede ver [aquí](http://www.stat.columbia.edu/~gelman/research/published/retropower_final.pdf). O buscando en el blog de Gelman https://statmodeling.stat.columbia.edu/
+### Errores M y S
+
+Otra cara del problema de overfitting son los llamados errores tipo M y S. La idea es la siguiente. Si un efecto (real) es de poca magnitud y tenemos muestras chicas o ruidosas (mediciones con poca precisión), solamente vamos a detectar efectos estadísticamente significativos cuando la magnitud estimada del efecto es exagerada (error M) y esto puede ocurrir incluso con efectos de signo contrario al verdadero (error S). Una buena referencia para estos errores se puede ver [aquí](http://www.stat.columbia.edu/~gelman/research/published/retropower_final.pdf). O buscando en el blog de Gelman https://statmodeling.stat.columbia.edu/
 
 Veamos de qué se trata haciendo unas simulaciones. Vamos a suponer que existe un efecto real entre una variable predictora y una respuesta, pero que la magnitud del efecto no es muy grande. Podemos simlular el caso de una regresión simple: 
 
