@@ -35,7 +35,7 @@ $$
 \text{Err} \left( x \right) = \text{Sesgo} + \text{Varianza} + \text{error irreducible}
 $$
 
-El error irreducible representa variabilidad no explicada por el modelo, aún cuando conocemos perfectamente $f\left(x\right)$. Esta variabilidad está fuera de nuestro control (así es la vida). Los componentes de sesgo y varianza podrían reducirse si conocemos el modelo que genera los datos y si tenemos muchos datos. Pero como normalmente trabajamos con pocos datos y con modelos imperfectos, tenemos un compromiso entre sesgo y varianza.
+El error irreducible representa variabilidad no explicada por el modelo, aún cuando conocemos perfectamente $f\left(x\right)$. Esta variabilidad está fuera de nuestro control (así es la vida). Los componentes de sesgo y varianza podrían reducirse si conocemos el modelo que genera los datos y si tenemos muchos datos. Pero como normalmente trabajamos con pocos datos (Los datos contienen una cantidad finita de información, y tenemos que repartir esa cantidad entre los parámetros que queremos estimar) y con modelos imperfectos, tenemos un compromiso entre sesgo y varianza. 
 
 Veamos un ejemplo con datos simulados
 
@@ -187,7 +187,6 @@ Cómo medimos qué tan lejos estamos de nuestro objetivo?
 * La *devianza* mide distancia relativa a una precisión perfecta
 
 * En general, a los estadísticos les importa la *out of sample deviance*
-
 
 
 Informaciónn: La reducción en incertidumbre derivada de conocer un resultado.
