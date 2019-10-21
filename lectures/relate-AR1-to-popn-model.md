@@ -66,11 +66,11 @@ This is all great, but what if we want to use the time series approach
 to capture more typical exponential growth dynamics? The Gompertz model makes
 this not just possible, but easy. Here is the Gompertz population model:
 
-$N_{t+1} = N_t exp (a - clogN_t + \epsilon_t)$
+$N_{t+1} = N_t \exp (a - c \log N_t + \epsilon_t)$
 
 This model has the exponential growth we expect, but it looks 
 nothing like the AR1 model, at least not yet. First we log transform
-population size: $x_t = log N_t$. Then we can rewrite the model as
+population size: $x_t = \log N_t$. Then we can rewrite the model as
 
 $x_{t+1} = x_t + a - cx_t + \epsilon_t$
 
@@ -107,8 +107,8 @@ $a$ as follows:
 ```
 a = coef(ar1_model)[2]*(1 - coef(ar1_model[1])
 ```
-where `coef(ar1_model[1]` is the autoregressive term and
-`coef(ar1_model[2]` is the mean. 
+where `coef(ar1_model)[1]` is the autoregressive term and
+`coef(ar1_model)[2]` is the mean. 
 
 However, based on my own little experiments,
 if your time-series is not stationary, and you have not
