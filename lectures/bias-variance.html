@@ -384,7 +384,7 @@ Y = f(x) + \epsilon
 <p>Es decir: <span class="math display">\[
 \text{Err} \left( x \right) = \text{Sesgo} + \text{Varianza} + \text{error irreducible}
 \]</span></p>
-<p>El error irreducible representa variabilidad no explicada por el modelo, aún cuando conocemos perfectamente <span class="math inline">\(f\left(x\right)\)</span>. Esta variabilidad está fuera de nuestro control (así es la vida). Los componentes de sesgo y varianza podrían reducirse si conocemos el modelo que genera los datos y si tenemos muchos datos. Pero como normalmente trabajamos con pocos datos y con modelos imperfectos, tenemos un compromiso entre sesgo y varianza.</p>
+<p>El error irreducible representa variabilidad no explicada por el modelo, aún cuando conocemos perfectamente <span class="math inline">\(f\left(x\right)\)</span>. Esta variabilidad está fuera de nuestro control (así es la vida). Los componentes de sesgo y varianza podrían reducirse si conocemos el modelo que genera los datos y si tenemos muchos datos. Pero como normalmente trabajamos con pocos datos (Los datos contienen una cantidad finita de información, y tenemos que repartir esa cantidad entre los parámetros que queremos estimar) y con modelos imperfectos, tenemos un compromiso entre sesgo y varianza.</p>
 <p>Veamos un ejemplo con datos simulados</p>
 <pre class="r"><code>set.seed(123)
 n &lt;- 20
