@@ -57,8 +57,8 @@ Para calcular la probabilidad marginal de los datos $y$ hacemos $\int P(y| \thet
 En general, no podemos resolver estas integrales para los modelos que queremos ajustar (e.g. para una regresión simple con una ordenada al origen, una pendiente y un parámetro de varianza, tenemos que resolver una integral triple). Lo que hacemos es usar métodos de Markov Chain Monte Carlo para generar muestras de la distribución posterior.
 
 
-![Alt Text](https://github.com/chi-feng/mcmc-demo)
+*Example*: Hamiltonian Monte Carlo
 
-https://chi-feng.github.io/mcmc-demo/app.html?algorithm=RandomWalkMH&target=banana
+<img src="https://raw.githubusercontent.com/chi-feng/mcmc-demo/master/docs/hmc.gif" width="600" />
 
 
