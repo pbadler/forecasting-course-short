@@ -67,10 +67,6 @@ to help anticipate the effects of decadal-scale climate change on Portal rodents
 6. *Optional bonus question* If you use function `auto.arima()` to fit these models,
 would your answer to questions 1-5 change? (Remember to set `seasonal=FALSE`.)
 
-7. *Optional bonus question* Would your answers to questions 1-5 change if you
-fit a Gompertz population model? To do this, you should only have to add one line
-of code in between preliminary steps 2 and 3. Refer to [this lecture](./../lectures/relate-AR1-to-popn-model) for hints.
-
 Submit your group's code along with a separate document containing answers to the questions as an attachment in an email to Peter.
 
 
