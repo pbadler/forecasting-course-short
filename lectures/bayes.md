@@ -61,5 +61,3 @@ Los enlaces de abajo muestran animaciones (hechas por Chi Feng) de algunos méto
 *   [Adaptive Metropolis Hastings](https://chi-feng.github.io/mcmc-demo/app.html?algorithm=AdaptiveMH&target=banana) [[1]](#ref-1)
 *   [Hamiltonian Monte Carlo](https://chi-feng.github.io/mcmc-demo/app.html?algorithm=HamiltonianMC&target=banana) [[2]](#ref-2)
 *   [No-U-Turn Sampler](https://chi-feng.github.io/mcmc-demo/app.html?algorithm=NaiveNUTS&target=banana) [[2]](#ref-2)
-
-
