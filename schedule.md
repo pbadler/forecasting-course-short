@@ -72,6 +72,11 @@ layout: page
  * [Evaluating forecasts](assignments/forecast_evaluation_assignment)
 
 ***
+11:30 -- Lecture
+
+* [Time series and population models](lectures/relate-AR1-to-popn-model)
+
+***
 12:00 -- Lecture
 
  * [Bias-variance trade-off](lectures/bias-variance)
