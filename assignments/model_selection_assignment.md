@@ -93,10 +93,11 @@ Here are the questions you need to answer. You should email to Peter an
 R script (your code) and a pdf of your final document. 
 
 1. Exploratory modeling:  
+
     a. Produce scatter plots showing the correlation between the residuals of
     an AR1 population model (see More Code below) and each of your climate covariates.
+    
     b. Do any of the correlations look strong? Optional: Are any statistically significant?
-<br><br>
 
 2. Model for inference: Test the hypothesis that deep winter snowpack 
 has a negative effect on bison population growth. You can assume that 
