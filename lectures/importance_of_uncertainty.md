@@ -23,9 +23,19 @@ Different sources contribute to forecast uncertainty. Mike Dietze lists the foll
 * Parameter uncertainty (how precise are your parameter estimates?)
 * Driver uncertainty (how rapidly will temperatures increase under climate change?)
 
+He also has a nice expression in his [2017 paper](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/eap.1589). This shows how uncertainty depends not only on the magnitude of the variation but the sensitivity of the process model to that variability. 
+
 This list could be expanded to include model selection uncertainty (perhaps a different model would make a different prediction?) or scenario uncertainty (how fast will greenhouse gas emissions rise or fall?).
 
 Some of these source of uncertainty stay constant over time while others grow. Observation error stays constant--observation errors this year do not affect the magnitude of observation errors next year. In a dynamic model, such as a model of population growth, process variability often compounds over time. Initial conditions uncertainty will grow quickly if a dynamic system is chaotic, but will decrease over time if the system goes to equilibrium.
+
+### Example 1: Net ecosystem exchange 
+
+![Fig. 5 from Dietze 2017 Ecological Applications](figures/NEE.png)
+
+### Example 2: Bison population forecast 
+
+![Tredennick's bison forecast](figures/bison.jpg)
 
 Identifying the relative contributions from these sources can be extremely valuable for determining how to improve a forecast. Weather prediction improved after researchers determined that initial conditinos were a large source of uncertainty, and then convinced governments to invest more resources in data collection to reduce that uncertainty.
 
