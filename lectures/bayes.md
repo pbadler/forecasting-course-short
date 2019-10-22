@@ -6,7 +6,6 @@ layout: post
 mathjax: true
 ---
 
-
 Los análisis Bayesianos se basan en teoría de probabilidades. En general, trabajamos con **variables aleatorias**:
 
 $$
