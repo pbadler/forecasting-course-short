@@ -320,6 +320,7 @@ for(i in 1: n.reps){
   ps[i] = tmp[2,4]
   res[i, ] = tmp[,1]
 }
+
 ```
 
 Grafiquemos las regresiones que fueron significativas
