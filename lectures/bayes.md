@@ -49,7 +49,10 @@ $$
 P(\theta | y) =  \frac{P(y| \theta)P(\theta)}{P(y)}
 $$
 
-Para calcular la probabilidad marginal de los datos $y$ podemos hacer $\int P(y \vert \theta) d \theta$.
+Para calcular la probabilidad marginal de los datos $y$ podemos hacer 
+$$
+P(y) = \int P(y \vert \theta) d \theta
+$$
 
 En general, no podemos resolver estas integrales para los modelos que queremos ajustar (e.g. para una regresión simple con una ordenada al origen, una pendiente y un parámetro de varianza, tenemos que resolver una integral triple). Lo que hacemos es usar métodos de Markov Chain Monte Carlo para generar muestras de la distribución posterior.
 
