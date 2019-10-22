@@ -7,15 +7,13 @@ mathjax: true
 ---
 
 
-## Teoría de Probabilidades
-
-En general, trabajamos con **variables aleatorias**
+Los análisis Bayesianos se basan en teoría de probabilidades. En general, trabajamos con **variables aleatorias**:
 
 $$
 P\left(X = x_i \right) = p_i
 $$
 
-La variable aleatoria $X$ toma el valor $x_i$ con probabilidad $p_i$. Para describir cómo cambian estas probabilidades usamos **distribuciones de probabilidad**. Estas pueden ser continuas o discreetas.
+La variable aleatoria $X$ toma el valor $x_i$ con probabilidad $p_i$. Para describir cómo cambian estas probabilidades usamos **distribuciones de probabilidad**. Estas pueden ser continuas o discretas.
 
 Las distribuciones discretas se definen con la **función de masa de probabilidad** $f(x)$ que define los valores de probabilidad $p_i$ para cada posible valor $x_i$. Por definicón, estas probabilidades son no-negativas y no mayores de $1$. La suma de las probablidades de los eventos posibles tiene que ser igual a $1$. La **función acumulada de probabilidad** $F(x)$ nos da la probabilidad de que la variable aleatoria sea menor o igual a un valor particular $F(x_i) = P(X \leq x_i)$. Una diferencia importante entre las distribuciones discretas y contiunas es que para variables continuas tenemos infinitos valores posibles. Entonces ya no hablamos de la probabilidad de obtener un valor en particular sino de la **densidad de probabilidad** alrededor de un valor determinado. En general, no prestamos demasiada atención a los valores particulares de densidad de probabilidad sino a comparaciones relativas. La **función de densidad de probabilidad** está definida como $f(x) = d F(x) / d x$. Las densidades de probabilidad de variables continuas tienen que ser no-negativas, pero pueden ser mayores que $1$, pero deben integrar a $1$ sobre los valores posibles de la variable $X$.  
 
