@@ -8,11 +8,9 @@ mathjax: true
 
 En esta clase vamos a ver cómo ajustar modelos Bayesianos usando `JAGS`, `Stan` y `brms`.
 
-Volvamos al ejemplo de los búfalos en Yellowstone. Anteriormente vimos como ajustar un modelo del tipo `lm(logN ~ loglagN + ppt_Jan, data=train )`. Para ajustar ese modelo en `JAGS` tenemos que hacer varias cosas...
+`JAGS` es un software que programa cadenas de Markov Chain Monte Carlo (MCMC) para modelos bayesianos [Plummer, M. (2003)](https://www.r-project.org/conferences/DSC-2003/Proceedings/Plummer.pdf). `JAGS` es *Just Another Gibbs Sampler* y es un sucesor de `BUGS`, que es *Bayesian inference using Gibbs sampling* (Lunn, Jackson, Best, Thomas, & Spiegelhalter, 2013; Lunn, Thomas, Best, & Spiegelhalter, 2000). `JAGS` es muy parecido a `BUGS` pero tiene algunas funciones extra y a veces es más rápido. Además, `JAGS` se puede usar en Windows, Mac y Linux.
 
-`JAGS` es un software que programa cadenas de Markov Chain Monte Carlo (MCMC) para modelos bayesianos (Plummer, M. (2003). JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling. In Proceedings of the 3rd international workshop on distributed statistical computing (dsc 2003), Vienna, Austria.ISSN 1609-395X. Plummer, M. (2015). JAGS version 4.0 user manual).
-
-`JAGS` es un sucesor de `BUGS`, que es *Bayesian inference using Gibbs sampling* (Lunn, Jackson, Best, Thomas, & Spiegelhalter, 2013; Lunn, Thomas, Best, & Spiegelhalter, 2000). `JAGS` es muy parecido a `BUGS` pero tiene algunas funciones extra y a veces es más rápido. Además, `JAGS` se puede usar en Windows, Mac y Linux.
+Volvamos al ejemplo de los bisontes en Yellowstone. Anteriormente vimos cómo ajustar un modelo del tipo `lm(logN ~ loglagN + ppt_Jan, data=train )`. Para ajustar ese modelo en `JAGS` tenemos que hacer varias cosas...
 
 Primero, tenemos que escribir el modelo en lenguaje `BUGS` y guardarlo en el directorio de trabajo. Una forma de hacer eso diréctamente desde `R` es usando la función `cat`:
 
@@ -20,7 +18,6 @@ Primero, tenemos que escribir el modelo en lenguaje `BUGS` y guardarlo en el dir
 cat(file = "bison.bug",
   "
   model {
-  
     # Función de likelihood
     for( i in 2:n ){
       logN[i] ~ dnorm (mu[i], tau)
@@ -122,7 +119,7 @@ inits <- function() list(b0 = runif(1, 0, 1),
                          
 ```
 
-Ahora podemos llamar a `JAGS` para ajustar el modelo
+Ahora podemos usar la función `jags` para ajustar el modelo
 
 ```R
 library(jagsUI)
@@ -155,9 +152,9 @@ plot(bison.sim)
 Si queremos hacer predicciones, tenemos que tener en cuenta la incertidumbre en los valores de los parámetros. Esa incertidumbre está representada por la posterior conjunta de nuestro modelo. Veamos como hacer una predicción de Monte Carlo a partir de esta posterior conjunta:
 
 ```R
-nsim = 1000      # Ensemble size
+nsim = 1000
 tot_time = dim(test)[1] + 1
-nClim = matrix(NA, nsim, tot_time)   # storage for all simulations
+nClim = matrix(NA, nsim, tot_time)
 init_obs = test$loglagN[test$year == 2012]
 nClim[,1] = rnorm(nsim, init_obs, 0)
 
@@ -188,7 +185,7 @@ accuracy(mp[2: tot_time], test$logN)
 
 ```
 
-Un aspecto bastante útil de los modelos formulados en lenguaje `BUGS` es que podemos usarla directamente para hacer predicciones. Esto es porque cuando escribimos algo como `logN[i] ~ dnorm(mu[i], tau)` estamos diciendo que los valores de `logN` son muestreados de una distribución normal. Cuando `JAGS` encuentra valores en `logN[i]`, va a usar esos valores para actualizar las cadenas Markovianas de los parmámetros de esa distribución normal. Si en vez de encontrar valores encuentra `NA` (valores perdidos), entonces genera una muestra de la normal en base a los valores de los parámetros en las cadenas Markovianas. Veamos cómo usar esta característica para predecir el futuro:
+Un aspecto bastante útil de los modelos formulados en lenguaje `BUGS` es que podemos usarlos directamente para hacer predicciones. Esto es porque cuando escribimos algo como `logN[i] ~ dnorm(mu[i], tau)` estamos diciendo que los valores de `logN` son muestreados de una distribución normal. Cuando `JAGS` encuentra valores en `logN[i]`, va a usar esos valores para actualizar las cadenas Markovianas de los parmámetros de esa distribución normal. Si en vez de encontrar valores encuentra `NA` (valores perdidos), entonces genera una muestra de la normal en base a los valores de los parámetros en las cadenas Markovianas. Veamos cómo usar esta característica para predecir el futuro:
 
 ```R
 bison_wNA <- bb_wide
@@ -225,6 +222,7 @@ lines(bison_wNA$year[43:48], bp.sim$q97.5$logN[43:48],
 accuracy( as.numeric( bp.sim$mean$logN[43:48] ), test$logN)
 
 ```
+### Stan
 
 Veamos como ajustar este mismo modelo pero usando `Stan`. A diferencia de `JAGS`, (entre otras cosas) `Stan` usa Hamiltonian Monte Carlo. Es una plataforma de alta performance para modelado estadístico. 
 
@@ -291,9 +289,9 @@ Para hacer predicciones a partir de la posterior conjunta de este modelo, podemo
 
 pos <- rstan::extract(fit, pars = c("b0", "b_lag", "b_ppt", "sigma"))
 
-nsim = 1000      # Ensemble size
+nsim = 1000
 tot_time = dim(test)[1] + 1
-nClim = matrix(NA, nsim, tot_time)   # storage for all simulations
+nClim = matrix(NA, nsim, tot_time)
 init_obs = test$loglagN[test$year == 2012]
 nClim[, 1] = rnorm(nsim, init_obs, 0)
 
@@ -397,6 +395,7 @@ lines(test$year, logNpred[, 8],
 accuracy( as.numeric( logNpred[,1] ), test$logN)
 
 ```
+### brms
 
 Para modelos de tipo "regresión", podemos usar el paquete `brms` de [Paul Bürkner](https://paul-buerkner.github.io/brms/). `brms` es una interfase entre `R` y `Stan`, podemos escribir modelos con las fórmulas de `R` para modelos lineales y `brms` escriber por nosotros el modelo de `Stan`
 
@@ -455,9 +454,9 @@ accuracy(mp[2: tot_time], test$logN)
 
 ### Para qué tanto lío?
 
-Vimos cómo implementar análisis Bayesianos en `JAGS`, `Stan`, y `brms`. En general, usar estos métodos implica más trabajo de nuestra parte (y de parte de la computadora). Bayes nos obliga a escribir más código, a pensar en qué previas usar, a revisar que las cadenas hayan converjido, a chequear que el tamaño de muestra es suficiente, etc. Sin embargo, al final pareciera que otenemos los mismos resultados que con análisis mucho más simples como cuando usamos `lm(logN ~ loglagN + ppt_Jan, data=train )` y luego hicimos predicciones con métodos de Monte Carlo usando la matriz de varianza-covarianza de los coeficientes. 
+Vimos cómo implementar análisis Bayesianos en `JAGS`, `Stan`, y `brms`. En general, usar estos métodos implica más trabajo de nuestra parte (y de parte de la computadora). Bayes nos obliga a escribir más código, a pensar en qué previas usar, a revisar que las cadenas hayan converjido, a chequear que el tamaño de muestra es suficiente, etc. Sin embargo, al final pareciera que obtenemos los mismos resultados que con análisis mucho más simples como cuando hicimos `lm(logN ~ loglagN + ppt_Jan, data=train )` y luego generamos predicciones con métodos de Monte Carlo usando la matriz de varianza-covarianza de los coeficientes. 
 
-En general, para modelos simples y con muchos datos, los análisis Bayesianos y los más "tradicionales" dan resultados muy similares a menos que las previas sean bastante informativas. Pero los métodos Bayesianos nos permiten expandir fácilmente nuestros modelos y analizarlos sin problemas. Además, no siempre podemos caracterizar a la covariación de los parámetros usando multivariadas normales. Veamos por ejemplo qué pasa cuando modelamos la distancia de desplazamiento diario (en km) de un elk. Vamos a ajustar una distribución Gamma a estos datos usando máxima veresomilitud y Bayes.
+En general, para modelos simples y con muchos datos, los análisis Bayesianos y los más "tradicionales" dan resultados muy similares a menos que las previas sean muy informativas. Pero los métodos Bayesianos nos permiten expandir fácilmente nuestros modelos y analizarlos sin problemas. Además, no siempre podemos caracterizar a la covariación de los parámetros usando multivariadas normales. Veamos por ejemplo qué pasa cuando modelamos la distancia de desplazamiento diario (en km) de un elk. Vamos a ajustar una distribución Gamma a estos datos usando máxima veresomilitud y Bayes.
 
 ```R
 
