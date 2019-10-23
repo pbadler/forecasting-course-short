@@ -3,7 +3,7 @@ title: "Computing prediction intervals with Monte Carlo simulations"
 output:
   html_document: default
 layout: post
-matjax: true
+mathjax: true
 ---
 
 For time series models, and other simple linear models, the
@@ -130,7 +130,7 @@ in the observations?
 
 It's only showing the uncertainty caused by parameter error. 
 We could add the process error on top. For a 
-linear model like this, it is just the standard devation of the errors (or residuals).
+linear model like this, it is just the standard deviation of the errors (or residuals).
 
 
 
