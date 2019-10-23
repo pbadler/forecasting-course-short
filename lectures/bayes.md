@@ -12,19 +12,19 @@ $$
 P\left(X = x_i \right) = p_i
 $$
 
-La variable aleatoria $X$ toma el valor $x_i$ con probabilidad $p_i$. Para describir cómo cambian estas probabilidades usamos **distribuciones de probabilidad**. Estas pueden ser continuas o discretas.
+La variable aleatoria $X$ toma el valor $x_i$ con probabilidad $p_i$. Para describir cómo cambian estas probabilidades usamos **distribuciones de probabilidad**, pueden ser continuas o discretas.
 
-Las distribuciones discretas se definen con la **función de masa de probabilidad** $f(x)$ que define los valores de probabilidad $p_i$ para cada posible valor $x_i$. Por definicón, estas probabilidades son no-negativas y no mayores de $1$. La suma de las probablidades de los eventos posibles tiene que ser igual a $1$. La **función acumulada de probabilidad** $F(x)$ nos da la probabilidad de que la variable aleatoria sea menor o igual a un valor particular $F(x_i) = P(X \leq x_i)$. Una diferencia importante entre las distribuciones discretas y contiunas es que para variables continuas tenemos infinitos valores posibles. Entonces ya no hablamos de la probabilidad de obtener un valor en particular sino de la **densidad de probabilidad** alrededor de un valor determinado. En general, no prestamos demasiada atención a los valores particulares de densidad de probabilidad sino a comparaciones relativas. La **función de densidad de probabilidad** está definida como $f(x) = d F(x) / d x$. Las densidades de probabilidad de variables continuas tienen que ser no-negativas, pero pueden ser mayores que $1$, pero deben integrar a $1$ sobre los valores posibles de la variable $X$.  
+Las distribuciones discretas se definen con la **función de masa de probabilidad** $f(x)$ que define los valores de probabilidad $p_i$ para cada posible valor $x_i$. Por definicón, estas probabilidades son no-negativas y no mayores a $1$. La suma de las probablidades de los eventos posibles tiene que ser igual a $1$. La **función acumulada de probabilidad** $F(x)$ nos da la probabilidad de que la variable aleatoria sea menor o igual a un valor particular $F(x_i) = P(X \leq x_i)$. Una diferencia importante entre las distribuciones discretas y contiunas es que para variables continuas tenemos infinitos valores posibles. Entonces ya no hablamos de la probabilidad de obtener un valor en particular sino de la **densidad de probabilidad** alrededor de un valor determinado. En general, no prestamos demasiada atención a los valores particulares de densidad de probabilidad sino a comparaciones relativas. La **función de densidad de probabilidad** está definida como $f(x) = d F(x) / d x$. Las densidades de probabilidad de variables continuas tienen que ser no-negativas, pero pueden ser mayores que $1$, y deben integrar a $1$ sobre los valores posibles de la variable $X$.  
 
 Cuando tenemos más de una variable aleatoria, podemos considerar **probabiliddes conjuntas** $P(x,y)$ que nos dan la probabilidad de obtener $x$ e $y$ simultáneamente. En el caso de que las variables sean independientes esa probabilidad es igual al producto $P(x) P(y)$. 
 
-Podemos definir la **probabilidad marginal** como
+Podemos definir la **probabilidad marginal** de la variable $X$ como
 
 $$
 P(x) = \int P(x,y) dy
 $$
 
-Y podemos definir la probabilidad conjunta en función de la **probabilidad condicional**
+Y podemos definir la probabilidad conjunta de $X$ e $Y$ en función de la **probabilidad condicional**
 
 $$
 P(x,y) = P(x|y)P(y)
@@ -43,13 +43,13 @@ $$
 P(x|y) = \frac{P(y|x)P(x)}{P(y)}
 $$
 
-Los anáilisis Bayesianos consideran a los parámetros ($\theta$) de un modelo como variables aleatorias y buscan caracterizar la distribución de pobabilidad de parámetros condicional en los datos observados:
+Los anáilisis Bayesianos consideran a los parámetros ($\theta$) de un modelo como variables aleatorias y buscan caracterizar la distribución de pobabilidades de parámetros condicional en los datos observados:
 
 $$
 P(\theta | y) =  \frac{P(y| \theta)P(\theta)}{P(y)}
 $$
 
-Es decir que la probabilidad *posterior* de los parámetros $\theta$ dado que observamos los datos $y$ es igual al likelihood multiplicado por las previas y dividido por la probabilidad total de los datos. La función de likelihood nos da la probabilidad de observar los datos condicional al valor de los parámetros $P(y \lvert \theta)$. La previa de los parámetros $P(\theta)$ refleja los posibles valores de los parámetros de acuerdo con nuestras "creencias" previas, o los resultados de estudios anteriores, o lo que nos parece que tiene sentido para el sistema de estudio (en definitiva, en base a *información* previa). Lo importante es que definamos las previas **antes** de ver los datos. Finalmente, la probabilidad total de los datos se obtiene integrando la función de lilkelihood sobre los posibles valores de los parámetros:
+Es decir que la probabilidad *posterior* de los parámetros $\theta$ dado que observamos los datos $y$ es igual a la probabilidad de los datos condicional a los parámetros (el *likelihood*) multiplicado por las *previas* y dividido por la probabilidad total de los datos. La función de likelihood nos da la probabilidad de observar los datos condicional al valor de los parámetros $P(y \lvert \theta)$. La previa de los parámetros $P(\theta)$ refleja los posibles valores de los parámetros de acuerdo con nuestras "creencias" previas, o los resultados de estudios anteriores, o lo que nos parece que tiene sentido para el sistema de estudio (en definitiva, en base a *información* previa). Lo importante es que definamos las previas antes de ver los datos. Finalmente, la probabilidad total de los datos se obtiene integrando la función de lilkelihood sobre los posibles valores de los parámetros:
 
 $$
 P(y) = \int P(y \vert \theta) d \theta
@@ -72,11 +72,11 @@ En este caso, como el modelo de datos (cuántos frutos son removidos) es una Bin
 
 ```R
 # previas
-alpha <- 2
-beta  <- 2
+alpha <- 1
+beta  <- 1
 
-pos.alpha <- alpha + sum(removidos[1:20])
-pos.beta  <- beta + sum(frutos[1:20] - removidos[1:20])
+pos.alpha <- alpha + sum(removidos)
+pos.beta  <- beta + sum(frutos - removidos)
 
 #valor esperado de la posterior (según la distribución Beta)
 pos.alpha / (pos.alpha + pos.beta)
@@ -88,17 +88,18 @@ qbeta(c(0.025, 0.975), pos.alpha, pos.beta)
 
 n = nobs
 
-op <- par(cex.lab = 1.5 , font.lab = 2, cex.axis = 1.3, las = 1, bty = "n")
-curve(dbeta(x, alpha + sum(removidos[1:n]) , beta + sum(frutos[1:n] - removidos[1:n])), 
-      lwd = 2, ylab = "Densidad de probabilidad", xlab = "Probabilidad de remoción")
+curve(dbeta(x, alpha + sum(removidos[1:n]) , 
+            beta + sum(frutos[1:n] - removidos[1:n])), 
+      lwd = 2, 
+      ylab = "Densidad de probabilidad", 
+      xlab = "Probabilidad de remoción")
 curve(dbeta(x, alpha, beta), lwd = 2, col = "gray", add = TRUE)
 text(0.6, 2.5, "previa")
 text(0.4, 9, "posterior")
-par(op)
 
 ```
 
-Con este script, podemos fijarnos cómo cambia la posterior si cambiamos la previa y si cambiamos el número de observaciones.
+Con este script, podemos fijarnos cómo cambia la posterior si cambiamos la previa y si cambiamos el número de observaciones. En general, cuantos más datos tenemos, menos relevante es la previa.
 
 ### MCMC
 
