@@ -60,8 +60,8 @@ cat(file = "m1.bug",
            }
 
            # Previas
-           r ~ dnorm(0, 1)I(0, ) 
-           K ~ dnorm(5000, 1e-06)I(0, )
+           r ~ dnorm(0, 1)T(0, ) 
+           K ~ dnorm(5000, 1e-06)T(0, )
            tau <- 1/(sigma*sigma) 
            sigma ~ dunif(0, 1000)
     }
