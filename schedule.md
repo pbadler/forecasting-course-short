@@ -146,8 +146,11 @@ layout: page
 ***
 9:00 -- Quiz
 
-*** 
-9:30 -- Lecture
+***
+9:30 -- Catch-up
+
+***
+10:30 -- Lecture
 
  * Bayesian model selection (JMM)
  * Bayesian regularization methods (JMM)
@@ -156,7 +159,10 @@ layout: page
 12:30 -- Lunch
 
 ***
-1:15 -- Discussion
+1:15 -- Discussion preparation
+
+***
+1:40 -- Discussion
 
  * Ecological forecasting case studies: each group will present one of the 
  following papers. Presentations will be 10 minutes, followed by 10 minutes of discussion. 
@@ -167,7 +173,7 @@ layout: page
     * Thomas et al. 2017: Leveraging 35 years of Pinus taeda research in the southeastern US to constrain forest carbon cycle predictions: regional data assimilation using ecosystem experiments
   
 ***
-3:00 -- Assignment
+3:30 -- Assignment
 
   * [Forecasting tournament](assignments/tournament)
 
