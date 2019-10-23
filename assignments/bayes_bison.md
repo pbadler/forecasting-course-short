@@ -13,8 +13,10 @@ En este práctico vamos a ajustar modelos con `JAGS`. Para eso tenemos que apren
 ### Objetivos:
 
 - Familiarizarse con la formulación de funciones de likelihood (modelos de datos)
-- Simular datos a partir de distintas funciones de likelihood
+- Simular datos a partir de funciones de likelihood
 - Usar `JAGS` para estimar parámetros a partir de los datos simulados
+- Ajustar modelos de crecimiento poblacional a los datos de bisontes en Yellowstone
+
 
 Veamos por ejemplo un modelo de crecimiento logístico en tiempo discreto:
 
@@ -149,6 +151,8 @@ print(m1.sim)
 
 Para este práctico, el objetivo es ajustar este modelo de crecimiento logístico en tiempo discreto a los datos de bisontes en Yellowstone. 
 
+**Recuerden** que antes de hacer nada con los resultados de los análisis, tenemos que verificar que los Rhat son $\leq 1.1$ y que los n.eff son aceptables
+
 1- Ajustar el modelo logístico a los datos de bisontes y comparar la exactitud (accuracy) con el modelo de Gompertz que ajustamos en [Bayes in practice](lectures/Bayes_in_practice). Tengan en cuenta que este modelo es con N y no con logN.
 
-2- Ajustar un modelo logístico donde el logaritmo de la tasa de crecimiento es una función lineal de la precipitación de enero y comparar las exactitud de este modelo con las anteriores.
+2- Ajustar un modelo logístico donde el logaritmo de la tasa de crecimiento es una función lineal de la precipitación de enero y comparar la exactitud de este modelo con las anteriores.
