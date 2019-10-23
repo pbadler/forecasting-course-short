@@ -153,6 +153,6 @@ Para este práctico, el objetivo es ajustar este modelo de crecimiento logístic
 
 **Recuerden** que antes de hacer nada con los resultados de los análisis, tenemos que verificar que los Rhat son $\leq 1.1$ y que los n.eff son aceptables
 
-1- Ajustar el modelo logístico a los datos de bisontes y comparar la exactitud (accuracy) con el modelo de Gompertz que ajustamos en [Bayes in practice](lectures/Bayes_in_practice). Tengan en cuenta que este modelo es con N y no con logN.
+1- Ajustar el modelo logístico a los datos de bisontes y comparar la exactitud (accuracy) con el modelo de Gompertz que ajustamos en [Bayes in practice](https://pbadler.github.io/forecasting-course-short/lectures/Bayes_in_practice). Tengan en cuenta que este modelo es con N y no con logN.
 
 2- Ajustar un modelo logístico donde el logaritmo de la tasa de crecimiento es una función lineal de la precipitación de enero y comparar la exactitud de este modelo con las anteriores.
