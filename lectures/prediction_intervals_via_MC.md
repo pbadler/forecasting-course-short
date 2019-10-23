@@ -130,7 +130,7 @@ in the observations?
 
 It's only showing the uncertainty caused by parameter error. 
 We could add the process error on top. For a 
-linear model like this, it is just the standard devation of the errors (or residuals).
+linear model like this, it is just the standard deviation of the errors (or residuals).
 
 
 
