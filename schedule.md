@@ -134,6 +134,11 @@ layout: page
  * [Bayes in practice (JAGS, Stan, brms)](lectures/Bayes_in_practice)
 
 ***
+
+2:15 -- Assignment [Bayes bison](assignments/bayes_bison)
+
+***
+
 <br/>
 
 ### Thursday, Oct. 24
