@@ -69,7 +69,7 @@ cat(file = "m1.bug",
 
 ```
 
-**Pregunta**: ¿Qué tan informativas son estas previas?  
+¿Qué tan informativas son estas previas?  
 
 Para responder a esta pregunta podemos hacer un **prior predictive check**:
 
