@@ -302,9 +302,35 @@ loo_compare(loo_0, loo_lag, loo_lagppt)
 
 La función `loo_compare` nos muestra los modelos ordenados según el expected log pointwise predictive density (elpd) y la variabilidad en diferencias con el modelo de mayor elpd. Los resultados son (como era de esperarse) similares a los de WAIC.
 
+Tanto WAIC como LOO no consideran que estamos tratando con series temporales. El desarrollo de métodos de validación cruzada para series temporales ajustados con métodos Bayesianos es un área de investigación activa. Pueden ver algo bastante nuevo [aquí](https://mc-stan.org/loo/articles/loo2-lfo.html)
+
 ### Regularización
 
-Los métodos bayesianos logran regularización a través de las previas. 
+Los métodos bayesianos logran regularización a través de las previas. Veamos el ejemplo de las 
+
+```R
+
+df = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/bison_weather.csv", stringsAsFactors = FALSE)
+
+fit_u <- brm(y ~ . , 
+           data = df, 
+           prior = prior(normal(0, 10), class = "b"), 
+           iter = 1000, chains = 3,
+           control = list(adapt_delta = 0.999, max_treedepth = 15))
+
+fit_rn <- brm(y ~ . , 
+           data = df, 
+           prior = prior(normal(0, 10), class = "b"), 
+           iter = 1000, chains = 3,
+           control = list(adapt_delta = 0.999, max_treedepth = 15))
+           
+fit_hs <- brm(y ~ . , 
+           data = df, 
+           prior = prior(horseshoe(df = 1), class = "b"), 
+           iter = 1000, chains = 3,
+           control = list(adapt_delta = 0.999, max_treedepth = 15))
+
+````
 
 
 
