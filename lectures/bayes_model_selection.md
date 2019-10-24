@@ -306,11 +306,77 @@ Tanto WAIC como LOO no consideran que estamos tratando con series temporales. El
 
 ### Regularización
 
-Los métodos bayesianos logran regularización a través de las previas. Veamos el ejemplo de las 
+Los métodos bayesianos logran regularización a través de las previas. Veamos el ejemplo de las variables ambientales y los bisontes de Yellowstone.
+
 
 ```R
 
-df = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/bison_weather.csv", stringsAsFactors = FALSE)
+library(forecast)
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+
+bison = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/YNP_bison_counts.csv", stringsAsFactors = FALSE)
+bison = select(bison,c(year,count.mean)) # drop non-essential columns
+names(bison) = c("year","N") # rename columns
+
+tmp = bison    
+tmp$year = tmp$year + 1
+names(tmp)[2] = "lagN"
+bison = full_join(bison,tmp)
+bison = filter(bison,year > min(year) & year < max(year))  # drop incomplete observations
+rm(tmp)
+
+# add log transformed variables
+bison = mutate(bison, logN = log(N))
+bison = mutate(bison, loglagN = log(lagN))
+
+weather = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/YNP_prism.csv", stringsAsFactors = FALSE)
+
+weather = weather %>% separate(Date,c("year","month"), sep = '-')
+weather$year = as.numeric(weather$year)
+weather$month = as.numeric(weather$month)
+weather$clim_year = ifelse(weather$month < 9, weather$year, weather$year + 1)
+weather$clim_month = ifelse(weather$month < 9, weather$month + 4, weather$month - 8)
+head(weather)
+
+precip_wide = weather %>% 
+                select(c(clim_year,clim_month,ppt_in)) %>%  # drop all the other climate variables
+                spread(clim_month,ppt_in) # 'spread' is where the magic happens
+
+# rename months (optional, but I think it makes the data frame easier to understand)
+names(precip_wide)[2:13] = paste0("ppt_",c("Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"))
+head(precip_wide)
+
+# aggregate by season
+precip_wide = mutate(precip_wide, ppt_Fall = rowSums(precip_wide[,c("ppt_Sep","ppt_Oct","ppt_Nov")]))
+precip_wide = mutate(precip_wide, ppt_Win = rowSums(precip_wide[,c("ppt_Dec","ppt_Jan","ppt_Feb")]))
+precip_wide = mutate(precip_wide, ppt_Spr = rowSums(precip_wide[,c("ppt_Mar","ppt_Apr","ppt_May")]))
+precip_wide = mutate(precip_wide, ppt_Sum = rowSums(precip_wide[,c("ppt_Jun","ppt_Jul","ppt_Aug")]))
+head(precip_wide)
+
+# merge with bison
+bison_wide = left_join(bison,precip_wide,by=c("year" = "clim_year"))
+
+y <- bison_wide$logN # population growth rate
+
+# covariates
+covar_names <- c("loglagN", grep("ppt",names(bison_wide),value=T) )
+X <- as.matrix(select(bison_wide, covar_names)) # covariate matrix
+
+test_vec <- as.numeric(apply(X, MARGIN = 2, FUN = "mean"))
+nacols <- which(is.na(test_vec))
+if(length(nacols) > 0) X <- X[,-nacols]
+
+# Standaradize the covariate values
+X_scaled <- scale(X, center = TRUE, scale = TRUE)
+bison_wide = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/bison_data.csv", stringsAsFactors = FALSE)
+
+y = bison_wide$logN
+
+df = cbind(y, X_scaled)
+
+options(mc.cores = parallel::detectCores())
 
 fit_u <- brm(y ~ . , 
            data = df, 
@@ -320,17 +386,76 @@ fit_u <- brm(y ~ . ,
 
 fit_rn <- brm(y ~ . , 
            data = df, 
-           prior = prior(normal(0, 10), class = "b"), 
+           prior = prior(normal(0, 1), class = "b"), 
            iter = 1000, chains = 3,
            control = list(adapt_delta = 0.999, max_treedepth = 15))
-           
+````
+
+Recientemente, se propuso a los "horseshoe priors" como previas regularizadoras. En una regresión múltiple con variable de respuesta de distribución normal tenemos: 
+
+$$
+y_i \ sim N (\mu_i, \sigma^2 )
+$$
+$$
+\mu_i = \beta_0 + \sum_{j = 1}^{p} \left( x_{ij} \beta_j \right)
+$$
+
+Los horseshoe priors usan como previa para los \betas
+
+$$
+\beta_i \sim N(0, \tau^2 \lambda_{i}^2)
+$$
+$$
+\lambda_i \sim \text{Cauchy}^{+} (0,1)
+$$
+
+Y los horseshoe regularizados usan
+$$
+\beta_i \sim N(0, \tau^2 \hat{\lambda}_{i}^2)
+$$
+$$
+\hat{\lambda}_i = \frac{c^2 \lambda_i^2}{c^2 + \tau^2 \lambda_i^2}
+$$
+$$
+\lambda_i \sim \text{Cauchy}^{+} (0,1)
+$$
+
+Esta versión de horseshoe está implementada en `brms``
+
+```R           
 fit_hs <- brm(y ~ . , 
            data = df, 
            prior = prior(horseshoe(df = 1), class = "b"), 
            iter = 1000, chains = 3,
            control = list(adapt_delta = 0.999, max_treedepth = 15))
+           
+betas_hs = fixef(fit_hs)
 
 ````
 
+Veamos cómo compara con lo que hicimos con `glmnet
 
+```R
+library(glmnet)
+
+y = df$y
+X_scaled = df[ , !(names(df) %in% "y")]
+
+lambdas <- 10^seq(2, -2, by = -.005) # sequence of penalties to test
+pen_facts <- c(0,rep(1, ncol(X_scaled)-1))
+
+ridge_out <- cv.glmnet(x = X_scaled, 
+                       y = y, 
+                       lambda = lambdas,
+                       penalty.factor = pen_facts,
+                       family = "gaussian", 
+                       alpha = 0, 
+                       standardize = FALSE, 
+                       type.measure = "mse", # mean square error
+                       nfolds = 6) # for cross-validation
+
+best_coefs = ridge_out$glmnet.fit$beta[,which(ridge_out$lambda==ridge_out$lambda.min)]
+print(best_coefs)
+
+```
 
