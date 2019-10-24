@@ -121,94 +121,59 @@ p_B
 
 Más allá de este ejemplo de cómo hacer un *posterior predictive check*, es importante que vean con qué facilidad podemos simular datos del modelo teniendo en cuenta lo que aprendimos de los datos (las posteriores). Con los datos que simulamos a partir de las posteriores podemos hacer cualquier cosa que nos resulte interesante...
 
-
-### Validación cruzada
-
-La idea es dejar cierta cantidad de datos como "train" y otra como "test". Un extremo es dejar de lado una sola observación como "test" y usar el resto como train. Si hacemos esto para cada una de las observaciones, tenemos un **leave one out cross validation**. Hacer esto es computacionalmente muy caro, pero podemos usar una aproximación usando un **Pareto-smoothed importance sampling leave-one-out cross-validation**( [Vehtari, A., Gelman, A., and Gabry, J. 2017](http://arxiv.org/abs/1507.02646/) ). Veamos un ejemplo con los datos de Bisontes. 
+Si ajustamos nuestros modelos con `Stan` (o `brms`), podemos hacer fácilmente posterior predictive checks 
 
 ```R
-library(forecast)
-library(ggplot2)
-library(dplyr)
-library(tidyverse)
-library(mvtnorm)
+bison_wide = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/bison_data.csv", stringsAsFactors = FALSE)
 
-bison = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/YNP_bison_counts.csv", stringsAsFactors = FALSE)
-bison = select(bison,c(year,count.mean)) # drop non-essential columns
-names(bison) = c("year","N") # rename columns
-bbison = bison # to use with JAGS
-
-tmp = bison
-tmp$year = tmp$year + 1
-names(tmp)[2] = "lagN"
-bison = full_join(bison,tmp)
-bison = filter(bison,year > min(year) & year < max(year))  # drop incomplete observations
-rm(tmp)
-
-# add log transformed variables
-bison = mutate(bison, logN = log(N))
-bison = mutate(bison, loglagN = log(lagN))
-# Set up weather data ----------------------------------------------------
-weather = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/YNP_prism.csv", stringsAsFactors = FALSE)
-weather = weather %>% separate(Date,c("year","month"), sep = '-')
-weather$year = as.numeric(weather$year)
-weather$month = as.numeric(weather$month)
-weather$clim_year = ifelse(weather$month < 9, weather$year, weather$year + 1)
-weather$clim_month = ifelse(weather$month < 9, weather$month + 4, weather$month - 8)
-head(weather)
-
-# To prepare for a merge with the bison data, we need to arrange months horizontally
-# rather than vertically. Here is how to do it for the precip data:
-precip_wide = weather %>% 
-  select(c(clim_year,clim_month,ppt_in)) %>%  # drop all the other climate variables
-  spread(clim_month,ppt_in) # 'spread' is where the magic happens
-
-# rename months (optional, but I think it makes the data frame easier to understand)
-names(precip_wide)[2:13] = paste0("ppt_",c("Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"))
-head(precip_wide)
-
-# aggregate by season
-precip_wide = mutate(precip_wide, ppt_Fall = rowSums(precip_wide[,c("ppt_Sep","ppt_Oct","ppt_Nov")]))
-precip_wide = mutate(precip_wide, ppt_Win = rowSums(precip_wide[,c("ppt_Dec","ppt_Jan","ppt_Feb")]))
-precip_wide = mutate(precip_wide, ppt_Spr = rowSums(precip_wide[,c("ppt_Mar","ppt_Apr","ppt_May")]))
-precip_wide = mutate(precip_wide, ppt_Sum = rowSums(precip_wide[,c("ppt_Jun","ppt_Jul","ppt_Aug")]))
-head(precip_wide)
-
-# merge with bison
-bison_wide = left_join(bison,precip_wide,by=c("year" = "clim_year"))
-bb_wide = left_join(bbison,precip_wide,by=c("year" = "clim_year"))
 
 train = subset(bison_wide, year < 2012)
 test = subset(bison_wide, year >= 2012)
-btrain = subset(bb_wide, year < 2012)
 
 library(brms)
 
-
-mb <- brm(logN ~ loglagN + ppt_Jan, 
+mlagppt <- brm(logN ~ loglagN + ppt_Jan, 
           family = gaussian(),
           prior = c(set_prior("normal(0, 2)", class = "b"),
                     set_prior("exponential(1)", class = "sigma")),
           chains = 3,
           iter = 1000,
           warmup = 500,
-          data = train)
+          data = train)    
           
-mlag <- brm(logN ~ loglagN, 
+preds <- posterior_predict(mlagppt)
+preds <- cbind(
+  Estimate = colMeans(preds), 
+  Q5 = apply(preds, 2, quantile, probs = 0.05),
+  Q95 = apply(preds, 2, quantile, probs = 0.95)
+)
+
+plot(train$year, train$logN, ylim = c(5.5, 9), xlab = "year", ylab = "log N")
+lines(train$year, preds[,1])
+lines(train$year, preds[,2], lty = 2)
+lines(train$year, preds[,3], lty = 2)
+
+m0 <- brm(logN ~ 1, 
           family = gaussian(),
-          prior = c(set_prior("normal(0, 2)", class = "b"),
-                    set_prior("exponential(1)", class = "sigma")),
+          prior = set_prior("exponential(1)", class = "sigma"),
           chains = 3,
           iter = 1000,
           warmup = 500,
-          data = train)          
-
-loo_mb <- loo(mb, reloo = TRUE)
-
-loo_lag <- loo(mlag, reloo = TRUE)
-
-print(loo_compare(loo_mb, loo_lag), digits = 3)
+          data = train)    
           
+preds <- posterior_predict(m0)
+preds <- cbind(
+  Estimate = colMeans(preds), 
+  Q5 = apply(preds, 2, quantile, probs = 0.05),
+  Q95 = apply(preds, 2, quantile, probs = 0.95)
+)
+
+plot(train$year, train$logN, ylim = c(5.5, 9), xlab = "year", ylab = "log N")
+lines(train$year, preds[,1])
+lines(train$year, preds[,2], lty = 2)
+lines(train$year, preds[,3], lty = 2)
+
+
 ```
 
 ### Criterios de información
@@ -262,7 +227,84 @@ $$
 WAIC = -2 \text{lppd} + 2 \sum_i \text{var}_{\theta} \log p(y_i| \theta)
 $$
 
-Ahora la penalidad no es con el númnero de parámetros del modelo sino con algo que tiene que ver con la varianza en las log probabilidades de cada observación. Algunos interpretan a esta penalidad como el "número efectivo de parámetros".
+Ahora la penalidad no es con el númnero de parámetros del modelo sino con algo que tiene que ver con la varianza en las log probabilidades de cada observación. Algunos interpretan a esta penalidad como el "número efectivo de parámetros". 
+
+Si ajustamos nuestros modelos con `Stan` (o `brms`) podemos usar la función `WAIC`. Veamos un ejemplo con los datos de Bisontes. Vamos a comparar los WAIC de un modelo sin covariables con uno que incluya lagN y otro que incluya lagN y el efecto de la precipitación en invierno.
+
+```R
+
+bison_wide = read.csv("https://raw.githubusercontent.com/pbadler/forecasting-course-short/master/data/bison_data.csv", stringsAsFactors = FALSE)
+
+
+train = subset(bison_wide, year < 2012)
+test = subset(bison_wide, year >= 2012)
+
+library(brms)
+
+m0 <- mlag <- brm(logN ~ 1, 
+          family = gaussian(),
+          prior = set_prior("exponential(1)", class = "sigma"),
+          chains = 3,
+          iter = 1000,
+          warmup = 500,
+          data = train)    
+          
+mlag <- brm(logN ~ loglagN, 
+          family = gaussian(),
+          prior = c(set_prior("normal(0, 2)", class = "b"),
+                    set_prior("exponential(1)", class = "sigma")),
+          chains = 3,
+          iter = 1000,
+          warmup = 500,
+          data = train)       
+          
+mlagppt <- brm(logN ~ loglagN + ppt_Jan, 
+          family = gaussian(),
+          prior = c(set_prior("normal(0, 2)", class = "b"),
+                    set_prior("exponential(1)", class = "sigma")),
+          chains = 3,
+          iter = 1000,
+          warmup = 500,
+          data = train)          
+          
+waic_0 <- WAIC(m0)
+waic_0 
+
+waic_lag <- WAIC(mlag)
+waic_lag
+
+waic_lagppt <- WAIC(mlagppt)
+waic_lagppt
+
+loo_compare(waic_0, waic_lag, waic_lagppt)
+
+```
+Vemos que el modelo con lagN es claramente mejor que el modelo sin covariables. Sin embargo, agregar la precipitación de invierno no parece mejorar mucho la capacidad predictiva (según WAIC). Es importante ver no solo los valores de WAIC sino también los valores de variabilidad en la diferencia entre los distintos modelos con el model con mayor elpd. 
+
+### Validación cruzada
+
+La idea es dejar cierta cantidad de datos como "train" y otra como "test". Un extremo es dejar de lado una sola observación como "test" y usar el resto como train. Si hacemos esto para cada una de las observaciones, tenemos un **leave one out cross validation**. Hacer esto es computacionalmente muy caro, pero podemos usar una aproximación usando un **Pareto-smoothed importance sampling leave-one-out cross-validation** ( [Vehtari, A., Gelman, A., and Gabry, J. 2017](http://arxiv.org/abs/1507.02646/) ). Veamos qué pasa con los análisis que hicimos recién con los datos de los bisontes.
+
+```R
+
+loo_0 <- loo(m0, reloo = TRUE)
+loo_0
+
+loo_lag <- loo(mlag, reloo = TRUE)
+loo_lag
+
+loo_lagppt <- loo(mlagppt, reloo = TRUE)
+loo_lagppt
+
+loo_compare(loo_0, loo_lag, loo_lagppt)
+          
+```
+
+La función `loo_compare` nos muestra los modelos ordenados según el expected log pointwise predictive density (elpd) y la variabilidad en diferencias con el modelo de mayor elpd. Los resultados son (como era de esperarse) similares a los de WAIC.
+
+### Regularización
+
+Los métodos bayesianos logran regularización a través de las previas. 
 
 
 
