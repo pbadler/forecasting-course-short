@@ -152,8 +152,7 @@ layout: page
 ***
 10:30 -- Lecture
 
- * Bayesian model selection (JMM)
- * Bayesian regularization methods (JMM)
+ * [Bayesian model selection and regularization methods](lectures/bayes_model_selection)
  
 ***
 12:30 -- Lunch
