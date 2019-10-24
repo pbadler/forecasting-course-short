@@ -376,6 +376,8 @@ y = bison_wide$logN
 
 df = cbind(y, X_scaled)
 
+library(brms)
+
 options(mc.cores = parallel::detectCores())
 
 fit_u <- brm(y ~ . , 
@@ -383,12 +385,20 @@ fit_u <- brm(y ~ . ,
            prior = prior(normal(0, 10), class = "b"), 
            iter = 1000, chains = 3,
            control = list(adapt_delta = 0.999, max_treedepth = 15))
+           
+print(fit_u)
+betas_u = fixef(fit_u)
 
 fit_rn <- brm(y ~ . , 
            data = df, 
            prior = prior(normal(0, 1), class = "b"), 
            iter = 1000, chains = 3,
            control = list(adapt_delta = 0.999, max_treedepth = 15))
+
+print(fit_rn)
+           
+betas_rn = fixef(fit_rn)
+
 ````
 
 Recientemente, se propuso a los "horseshoe priors" como previas regularizadoras. En una regresión múltiple con variable de respuesta de distribución normal tenemos: 
@@ -438,9 +448,6 @@ Veamos cómo compara con lo que hicimos con `glmnet
 ```R
 library(glmnet)
 
-y = df$y
-X_scaled = df[ , !(names(df) %in% "y")]
-
 lambdas <- 10^seq(2, -2, by = -.005) # sequence of penalties to test
 pen_facts <- c(0,rep(1, ncol(X_scaled)-1))
 
@@ -456,6 +463,14 @@ ridge_out <- cv.glmnet(x = X_scaled,
 
 best_coefs = ridge_out$glmnet.fit$beta[,which(ridge_out$lambda==ridge_out$lambda.min)]
 print(best_coefs)
+
+plot(best_coefs, ylim = c(-0.5, 1))
+
+points(betas_u[2:18,1], col = 4)
+
+points(betas_hs[2:18,1], col = 2)
+
+points(betas_rn[2:18,1], col = 3)
 
 ```
 
