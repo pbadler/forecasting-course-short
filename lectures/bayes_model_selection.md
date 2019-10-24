@@ -173,7 +173,6 @@ lines(train$year, preds[,1])
 lines(train$year, preds[,2], lty = 2)
 lines(train$year, preds[,3], lty = 2)
 
-
 ```
 
 ### Criterios de información
@@ -464,13 +463,17 @@ ridge_out <- cv.glmnet(x = X_scaled,
 best_coefs = ridge_out$glmnet.fit$beta[,which(ridge_out$lambda==ridge_out$lambda.min)]
 print(best_coefs)
 
-plot(best_coefs, ylim = c(-0.5, 1))
+plot(best_coefs, ylim = c(-0.2, 0.6))
 
-points(betas_u[2:18,1], col = 4)
+points(betas_u[2:18,1], col = rgb(1,0,0,0.5), pch = 19)
 
-points(betas_hs[2:18,1], col = 2)
+points(betas_hs[2:18,1], col = rgb(0,1,0,0.5), pch = 19)
 
-points(betas_rn[2:18,1], col = 3)
+points(betas_rn[2:18,1], col = rgb(0,0,1,0.5), pch = 19)
 
+plot(best_coefs, betas_u[2:18,1], xlim = c(-0.2,0.6), ylim = c(-0.2, 0.6))
+abline(0,1)
+points(best_coefs, betas_rn[2:18,1], col = rgb(0,0,1,0.5), pch = 19)
+points(best_coefs, betas_hs[2:18,1], col = rgb(0,1,0,0.5), pch = 19)
 ```
 
